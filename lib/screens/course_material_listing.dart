@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/theme.dart';
 
 class CourseMaterialListing extends StatelessWidget {
@@ -106,10 +108,10 @@ class CourseMaterialListing extends StatelessWidget {
                   itemCount: 5, itemBuilder: (context, index) => Column(
                     children: [
                       ListTile(
-                        leading: const CircleAvatar(
+                        leading: CircleAvatar(
                           radius: 25,
-                          backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                          // child: Icon(Icons.docu),
+                          backgroundColor: const Color.fromARGB(255, 228, 228, 228),
+                          child: SvgPicture.asset('assets/svg/bxs_file-doc.svg',width: 25,),
                         ),
                         title: Text("The intro to lorem ipsum",style:primaryTextStyle),
                         subtitle: Text('Jun 12',style:primaryTextStyle.copyWith(fontSize: 14,color: Colors.grey)),
@@ -126,6 +128,22 @@ class CourseMaterialListing extends StatelessWidget {
                   )))
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: const Color(0xff6259FF),
+        extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)
+        ),
+        label: Row(
+          children: [
+            const Icon(Icons.add),
+            const SizedBox(width: 5,),
+            Text("Add Note",style: primaryTextStyle.copyWith(fontSize: 16,color: Colors.white),),
+          ],
+        ),
+        onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const PdfViewPage()));
+        }),
     );
   }
 }
