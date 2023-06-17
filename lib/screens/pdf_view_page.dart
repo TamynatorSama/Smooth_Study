@@ -96,12 +96,15 @@ class _PdfViewPageState extends State<PdfViewPage> {
         body: SfPdfViewer.asset(
           "assets/KOLAWOLE_SAMUEL_OLUWASEGUN.pdf",
           key: _pdfViewerKey,
+          controller: _pdfViewerController,
           pageLayoutMode: PdfPageLayoutMode.continuous
           ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: const Color(0xff6259FF),
           child: const Icon(Icons.bookmark),
           onPressed: (){
+            
+
           _pdfViewerKey.currentState!.openBookmarkView();
         }),
       ),
