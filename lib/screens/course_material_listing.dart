@@ -45,7 +45,7 @@ class CourseMaterialListing extends StatelessWidget {
                   alignment: Alignment.bottomLeft,
                   child: GestureDetector(
                     onTap: (){
-                      print("object");
+                      // print("object");
                     },
                     child: const Icon(
                       Icons.arrow_back_ios_rounded,
