@@ -29,5 +29,6 @@ flutter:
   assets:
     - assets/
     - assets/svg/
+    - assets/lvl.png
 
 
