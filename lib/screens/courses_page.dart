@@ -1,61 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/screens/course_material_listing.dart';
 import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/theme.dart';
 
 class CoursesPage extends StatelessWidget {
-  const CoursesPage({super.key});
+  final Level currentLevel;
+  const CoursesPage({super.key,required this.currentLevel});
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Column(
         children: [
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).padding.top,
-              horizontal: 24,
-            ),
+                vertical: MediaQuery.of(context).padding.top, horizontal: 24),
             width: double.maxFinite,
             height: 250,
             decoration: const BoxDecoration(
-              color: Color(0xff383838),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              image: DecorationImage(
-                alignment: Alignment.centerRight,
-                image: AssetImage('assets/back.png'),
-                fit: BoxFit.fitHeight,
-              ),
-            ),
+                color: Color(0xff383838),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40)),
+                image: DecorationImage(
+                    alignment: Alignment.centerRight,
+                    image: AssetImage('assets/back.png'),
+                    fit: BoxFit.fitHeight)),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                  child: Align(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    child: Text(
-                      """
-            100 lvl 
-    Computer Science
-                    """,
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                          alignment: AlignmentDirectional.bottomCenter,
+                          child: Text(
+                            currentLevel.levelName,
+                            style: primaryTextStyle.copyWith(fontSize: 32,color: Colors.white,fontWeight: FontWeight.w600),
+                          )),
+                    ],
                   ),
                 ),
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
+                    onTap: Navigator.of(context).pop,
                     child: const Icon(
                       Icons.arrow_back_ios_rounded,
                       color: Colors.white,
@@ -65,6 +57,7 @@ class CoursesPage extends StatelessWidget {
               ],
             ),
           ),
+          
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -112,11 +105,11 @@ class CoursesPage extends StatelessWidget {
           // const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: currentLevel.courses.length,
               itemBuilder: (context, index) => Column(
                 children: [
                   ListTile(
-                    onTap: () {
+                    onTap: () async{
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => const CourseMaterialListing(),
@@ -126,20 +119,20 @@ class CoursesPage extends StatelessWidget {
                     leading: const CircleAvatar(
                       radius: 25,
                       backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                      child: Icon(Icons.military_tech, size: 25),
+                      child: Icon(Icons.military_tech, size: 25,color: Colors.black,),
                     ),
                     title: Text(
-                      "CSC 101",
+                      currentLevel.courses[index].courseCode,
                       style: primaryTextStyle,
                     ),
                     subtitle: Text(
-                      'Intro to cool tech stuff',
+                      currentLevel.courses[index].courseTitle,
                       style: primaryTextStyle.copyWith(
                         fontSize: 14,
                         color: Colors.grey,
                       ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                    trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 18,),
                   ),
                   const Divider(
                     height: 1,

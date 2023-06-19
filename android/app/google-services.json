@@ -29,6 +29,13 @@
             {
               "client_id": "735029969412-05bumi5230vi12oi1899m95tqgvqajel.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "735029969412-amv3apoc2227o7d0r9m21kljm38onfku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smoothStudy"
+              }
             }
           ]
         }
