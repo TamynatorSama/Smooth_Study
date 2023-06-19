@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/screens/course_material_listing.dart';
-import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/theme.dart';
 
 class CoursesPage extends StatelessWidget {
@@ -112,7 +111,7 @@ class CoursesPage extends StatelessWidget {
                     onTap: () async{
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => const CourseMaterialListing(),
+                          builder: (_) => CourseMaterialListing(course: currentLevel.courses[index],levelName: currentLevel.levelName ,),
                         ),
                       );
                     },
@@ -163,8 +162,8 @@ class CoursesPage extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const PdfViewPage()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const PdfViewPage(m)));
           }),
     );
   }

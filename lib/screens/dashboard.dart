@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
@@ -14,14 +14,16 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMixin{
 
 
   late AppProvider _appProvider;
   bool isloading =  false;
+  late AnimationController _lottieController;
 
   @override
   void initState() {
+    _lottieController = AnimationController(vsync: this);
     _appProvider = Provider.of<AppProvider>(context,listen: false);
     getData();
     super.initState();
@@ -81,9 +83,6 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-                   const SizedBox(
-                    height: 16,
-                  ),
                   // Text(
                   //   'Good Morning',
                   //   style: primaryTextStyle.copyWith(
@@ -91,9 +90,9 @@ class _DashboardState extends State<Dashboard> {
                   //     fontWeight: FontWeight.w600,
                   //   ),
                   // ),
-                   const SizedBox(
+                   provider.error || !isloading ?  const SizedBox(
                     height: 22,
-                  ),
+                  ):const Offstage(),
                   isloading ? Expanded(
                     child: Center(
                       child: SizedBox(
@@ -114,18 +113,58 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     ),
                   ):
+                  provider.error ? Expanded(child: Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LottieBuilder.asset("assets/error_new.json",
+                      controller: _lottieController,
+                      // height: 100,
+                      // height: ,
+                      width: size.width * 0.7,
+                      fit: BoxFit.cover,
+                      onLoaded: (p0) {
+                        _lottieController.duration = p0.duration;
+                        _lottieController.forward().then((value) => _lottieController.repeat());
+                      },),
+                      // SvgPicture.string("""<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6.697 6.697a7.5 7.5 0 0 1 12.794 4.927A4.002 4.002 0 0 1 18.5 19.5h-12a5 5 0 0 1-1.667-9.715a7.47 7.47 0 0 1 1.864-3.088ZM12 13a1 1 0 0 1-1-1V9a1 1 0 0 1 2 0v3a1 1 0 0 1-1 1Zm-1.5 2.5a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd"/></svg>""",width: 200,height: 200,fit: BoxFit.cover,),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: size.width * 0.8),
+                        child: Text("There was an error while trying to connect with the database, chcek your intenet connection and try again",textAlign: TextAlign.center,style: primaryTextStyle.copyWith(fontSize: 16,color: const Color.fromARGB(255, 97, 97, 97)),)),
+                        GestureDetector(
+                          onTap: (){
+                            getData();
+                          },
+                          child: Container(
+                            width: double.maxFinite,
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(top: 20),
+                            constraints: BoxConstraints(maxWidth:  size.width * 0.3),
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff6259FF),
+                              borderRadius: BorderRadius.circular(6)
+                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Retry",style:primaryTextStyle.copyWith(color: Colors.white,)),
+                              const SizedBox(width: 10,),
+                              const Icon(Icons.replay_outlined,color: Colors.white,)
+                          ],)),
+                        )
+                    ],
+                  ))): 
                   Wrap(
                     children: List.generate(provider.model?.departments.first.levels.length ?? 4, (index){
                       Level presentDepartment = provider.model!.departments.first.levels[index];
                       if(index == 0 || index == provider.model?.departments.length || index == 4){
                         return GestureDetector(
-                    onTap: () async{
-                        await _appProvider.getMaterials();
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (_) => CoursesPage(currentLevel: presentDepartment),
-                      //   ),
-                      // );
+                    onTap: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => CoursesPage(currentLevel: presentDepartment),
+                        ),
+                      );
                     },
                     child: Container(
                       alignment: Alignment.centerLeft,
