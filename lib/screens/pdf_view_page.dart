@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/material_model.dart';
-import 'package:smooth_study/utils/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewPage extends StatefulWidget {
@@ -71,7 +70,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
               child: AppBar(
                 title: Text(
                   widget.materialModel.fileName,
-                  style: primaryTextStyle.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: Colors.white),

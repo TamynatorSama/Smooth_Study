@@ -250,24 +250,21 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
               ],
             ),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: const Color(0xff6259FF),
-          extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          label: Row(
-            children: [
-              const Icon(Icons.add),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                "Add Note",
-                style: primaryTextStyle.copyWith(
-                    fontSize: 16, color: Colors.white),
-              ),
-            ],
-          ),
-          onPressed: () {}),
+        backgroundColor: const Color(0xff6259FF),
+        extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)
+        ),
+        label: Row(
+          children: [
+            const Icon(Icons.add),
+            const SizedBox(width: 5,),
+            Text("Add Note",style: primaryTextStyle.copyWith(fontSize: 16,color: Colors.white),),
+          ],
+        ),
+        onPressed: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const PdfViewPage()));
+        }),
     );
   }
 

@@ -6,19 +6,33 @@ import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/firebase_options.dart';
 import 'package:smooth_study/screens/dashboard.dart';
+import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
   await MaterialBox.initialize();
   await RecentViewedBox.initialize();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(systemNavigationBarColor: Colors.black,statusBarColor: Colors.transparent));
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(
+      systemNavigationBarColor: Colors.black,
+      statusBarColor: Colors.transparent,
+    ),
+  );
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AppProvider()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -26,12 +40,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AppProvider(),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Dashboard(),
-      ),
+    return Consumer<ThemeProvider>(
+      builder: (context, controller, child) {
+        return MaterialApp(
+          theme: controller.getTheme(),
+          debugShowCheckedModeBanner: false,
+          home: const Dashboard(),
+        );
+      },
     );
   }
 }

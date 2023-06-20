@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/screens/course_material_listing.dart';
-import 'package:smooth_study/utils/theme.dart';
 
 class CoursesPage extends StatelessWidget {
   final Level currentLevel;
-  const CoursesPage({super.key,required this.currentLevel});
+  const CoursesPage({super.key, required this.currentLevel});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         children: [
@@ -18,12 +16,12 @@ class CoursesPage extends StatelessWidget {
                 vertical: MediaQuery.of(context).padding.top, horizontal: 24),
             width: double.maxFinite,
             height: 250,
-            decoration: const BoxDecoration(
-                color: Color(0xff383838),
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(40),
                     bottomRight: Radius.circular(40)),
-                image: DecorationImage(
+                image: const DecorationImage(
                     alignment: Alignment.centerRight,
                     image: AssetImage('assets/back.png'),
                     fit: BoxFit.fitHeight)),
@@ -38,7 +36,10 @@ class CoursesPage extends StatelessWidget {
                           alignment: AlignmentDirectional.bottomCenter,
                           child: Text(
                             currentLevel.levelName,
-                            style: primaryTextStyle.copyWith(fontSize: 32,color: Colors.white,fontWeight: FontWeight.w600),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 32,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                           )),
                     ],
                   ),
@@ -56,7 +57,7 @@ class CoursesPage extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -98,7 +99,7 @@ class CoursesPage extends StatelessWidget {
                   ),
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 16)),
-              style: primaryTextStyle,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           // const SizedBox(height: 10),
@@ -108,7 +109,7 @@ class CoursesPage extends StatelessWidget {
               itemBuilder: (context, index) => Column(
                 children: [
                   ListTile(
-                    onTap: () async{
+                    onTap: () async {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => CourseMaterialListing(course: currentLevel.courses[index],levelName: currentLevel.levelName ,),
@@ -118,20 +119,27 @@ class CoursesPage extends StatelessWidget {
                     leading: const CircleAvatar(
                       radius: 25,
                       backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                      child: Icon(Icons.military_tech, size: 25,color: Colors.black,),
+                      child: Icon(
+                        Icons.military_tech,
+                        size: 25,
+                        color: Colors.black,
+                      ),
                     ),
                     title: Text(
                       currentLevel.courses[index].courseCode,
-                      style: primaryTextStyle,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     subtitle: Text(
                       currentLevel.courses[index].courseTitle,
-                      style: primaryTextStyle.copyWith(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
                     ),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded,size: 18,),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 18,
+                    ),
                   ),
                   const Divider(
                     height: 1,
@@ -156,7 +164,7 @@ class CoursesPage extends StatelessWidget {
               ),
               Text(
                 "Add Note",
-                style: primaryTextStyle.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 16, color: Colors.white),
               ),
             ],
@@ -165,6 +173,7 @@ class CoursesPage extends StatelessWidget {
             // Navigator.of(context).push(
             //     MaterialPageRoute(builder: (context) => const PdfViewPage(m)));
           }),
+      
     );
   }
 }

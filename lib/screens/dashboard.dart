@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/screens/courses_page.dart';
-import 'package:smooth_study/utils/theme.dart';
+import 'package:smooth_study/utils/theme_provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -29,7 +30,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
     super.initState();
   }
 
-  getData()async{
+  getData() async {
     setState(() {
       isloading = true;
     });
@@ -40,38 +41,32 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
     });
   }
 
-
-  
-
-
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Consumer<AppProvider>(
-        builder: (context,provider,child) {
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top:  20,
-                left: 18,
-                right: 18,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Smooth Study',
-                        style: primaryTextStyle.copyWith(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+      body: Consumer<AppProvider>(builder: (context, provider, child) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 18,
+              right: 18,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer<ThemeProvider>(
+                  builder: (context, controller, _) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Smooth Study',
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                      ),
+                      
                       Row(
                         children: [
                           Switch(
@@ -82,7 +77,7 @@ class _DashboardState extends State<Dashboard> with SingleTickerProviderStateMix
                         ],
                       ),
                     ],
-                  ),
+                  
                   // Text(
                   //   'Good Morning',
                   //   style: primaryTextStyle.copyWith(
