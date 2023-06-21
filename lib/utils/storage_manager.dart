@@ -1,27 +1,26 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class StorageManager {
+  static late Box themeBox;
+
+  static Future initialize() async {
+    themeBox = await Hive.openBox('themeBox');
+  }
+
   static void saveData(String key, dynamic value) async {
-    final prefs = await SharedPreferences.getInstance();
-    if (value is int) {
-      prefs.setInt(key, value);
-    } else if (value is String) {
-      prefs.setString(key, value);
-    } else if (value is bool) {
-      prefs.setBool(key, value);
-    } else {
-      print("Invalid Type");
-    }
+    themeBox.put(
+      key,
+      value,
+    );
   }
 
   static Future<dynamic> readData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    dynamic obj = prefs.get(key);
-    return obj;
+    themeBox.containsKey(key);
+    return await themeBox.get(key, defaultValue: 'light');
   }
 
   static Future<bool> deleteData(String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.remove(key);
+   await themeBox.delete(key);
+   return true;
   }
 }

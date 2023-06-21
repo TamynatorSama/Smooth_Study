@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/department_model.dart';
-import 'package:smooth_study/screens/course_material_listing.dart';
+
+import '../widget/course_widget.dart';
 
 class CoursesPage extends StatelessWidget {
   final Level currentLevel;
@@ -8,6 +9,8 @@ class CoursesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
     return Scaffold(
       body: Column(
         children: [
@@ -65,7 +68,7 @@ class CoursesPage extends StatelessWidget {
                   prefixIcon: const Icon(Icons.search_rounded),
                   hintText: "Search Course",
                   filled: true,
-                  fillColor: const Color.fromARGB(255, 233, 233, 233),
+                  fillColor: const Color.fromARGB(255, 119, 118, 118),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(
@@ -107,39 +110,44 @@ class CoursesPage extends StatelessWidget {
               itemCount: currentLevel.courses.length,
               itemBuilder: (context, index) => Column(
                 children: [
-                  ListTile(
-                    onTap: () async {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => CourseMaterialListing(course: currentLevel.courses[index],levelName: currentLevel.levelName ,),
-                        ),
-                      );
-                    },
-                    leading: const CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Color.fromARGB(255, 228, 228, 228),
-                      child: Icon(
-                        Icons.military_tech,
-                        size: 25,
-                        color: Colors.black,
-                      ),
-                    ),
-                    title: Text(
-                      currentLevel.courses[index].courseCode,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    subtitle: Text(
-                      currentLevel.courses[index].courseTitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 18,
-                    ),
+                  CourseWidget(
+                    courseCode: 'CSC 401',
+                    courseTitle: 'Intro to lorem ipsum dolor',
+                    size: size,
                   ),
+                  // ListTile(
+                  //   onTap: () async {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (_) => CourseMaterialListing(course: currentLevel.courses[index],levelName: currentLevel.levelName ,),
+                  //       ),
+                  //     );
+                  //   },
+                  //   leading: const CircleAvatar(
+                  //     radius: 25,
+                  //     backgroundColor: Color.fromARGB(255, 228, 228, 228),
+                  //     child: Icon(
+                  //       Icons.military_tech,
+                  //       size: 25,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  //   title: Text(
+                  //     currentLevel.courses[index].courseCode,
+                  //     style: Theme.of(context).textTheme.bodySmall,
+                  //   ),
+                  //   subtitle: Text(
+                  //     currentLevel.courses[index].courseTitle,
+                  //     style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  //           fontSize: 14,
+                  //           color: Colors.grey,
+                  //         ),
+                  //   ),
+                  //   trailing: const Icon(
+                  //     Icons.arrow_forward_ios_rounded,
+                  //     size: 18,
+                  //   ),
+                  // ),
                   const Divider(
                     height: 1,
                     thickness: 4,
