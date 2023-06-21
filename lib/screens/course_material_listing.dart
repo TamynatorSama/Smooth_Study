@@ -2,15 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/model/material_model.dart';
-import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/material_box.dart';
-import 'package:smooth_study/utils/recently_viewed_box.dart';
 
 class CourseMaterialListing extends StatefulWidget {
   final Courses course;
@@ -56,7 +53,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Column(
@@ -224,8 +221,8 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
             ],
           ),
           onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const PdfViewPage()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const PdfViewPage()));
           }),
     );
   }
