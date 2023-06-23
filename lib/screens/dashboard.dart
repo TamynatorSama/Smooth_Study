@@ -17,6 +17,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
+  late ScrollController scrollCtrl;
   late AppProvider _appProvider;
   bool isloading = false;
   late AnimationController _lottieController;
@@ -25,6 +26,7 @@ class _DashboardState extends State<Dashboard>
   void initState() {
     _lottieController = AnimationController(vsync: this);
     _appProvider = Provider.of<AppProvider>(context, listen: false);
+    scrollCtrl = ScrollController();
     getData();
     super.initState();
   }
@@ -213,14 +215,20 @@ class _DashboardState extends State<Dashboard>
                                     children: [
                                       Column(
                                         children: [
-                                          GestureDetector(
-                                            //   onTap: () {
-                                            //               Navigator.of(context).push(
-                                            //                 MaterialPageRoute(
-                                            //                   builder: (_) => const CoursesPage(
-                                            //                       currentLevel:
-                                            //                           ),
-                                            // ), ),},
+                                         GestureDetector(
+                                            onTap: ()  {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (_) => CoursesPage(
+                                                    currentLevel: provider
+                                                        .model!
+                                                        .departments
+                                                        .first
+                                                        .levels[0],
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             child: Container(
                                               width: size.width * 0.44,
                                               height: size.height * 0.15,
@@ -232,16 +240,17 @@ class _DashboardState extends State<Dashboard>
                                                   colorFilter: controller
                                                           .isDarkMode
                                                       ? const ColorFilter.mode(
-                                                    Color.fromARGB(96, 0, 0, 0),
-                                                    BlendMode.srcOver,
-                                                  )
+                                                          Color.fromARGB(
+                                                              96, 0, 0, 0),
+                                                          BlendMode.srcOver,
+                                                        )
                                                       : const ColorFilter.mode(
                                                           Color(0xA0000000),
                                                           BlendMode.srcOver,
                                                         ),
-                                                  fit: BoxFit.fill,
+                                                  fit: BoxFit.cover,
                                                   image: const AssetImage(
-                                                      'assets/100.jpg'),
+                                                      'assets/100.png'),
                                                 ),
                                                 color: const Color.fromARGB(
                                                     255, 172, 119, 119),
@@ -258,9 +267,7 @@ class _DashboardState extends State<Dashboard>
                                           ),
                                           const SizedBox(height: 16),
                                           GestureDetector(
-                                            onTap: () {
-                                              print(provider.model!.departments
-                                                  .first.levels);
+                                            onTap: ()  {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (_) => CoursesPage(
@@ -268,7 +275,7 @@ class _DashboardState extends State<Dashboard>
                                                         .model!
                                                         .departments
                                                         .first
-                                                        .levels[0],
+                                                        .levels[1],
                                                   ),
                                                 ),
                                               );
@@ -283,18 +290,20 @@ class _DashboardState extends State<Dashboard>
                                                   image: DecorationImage(
                                                     colorFilter: controller
                                                             .isDarkMode
-                                                        ? const ColorFilter.mode(
-                                                    Color.fromARGB(96, 0, 0, 0),
-                                                    BlendMode.srcOver,
-                                                  )
+                                                        ? const ColorFilter
+                                                            .mode(
+                                                            Color.fromARGB(
+                                                                83, 0, 0, 0),
+                                                            BlendMode.srcOver,
+                                                          )
                                                         : const ColorFilter
                                                             .mode(
                                                             Color(0xA0000000),
                                                             BlendMode.srcOver,
                                                           ),
-                                                    fit: BoxFit.fill,
+                                                    fit: BoxFit.cover,
                                                     image: const AssetImage(
-                                                        'assets/200.jpg'),
+                                                        'assets/200.png'),
                                                   ),
                                                   color: const Color.fromARGB(
                                                       255, 0, 0, 0)),
@@ -310,67 +319,98 @@ class _DashboardState extends State<Dashboard>
                                           ),
                                         ],
                                       ),
-                                      Container(
-                                        width: size.width * 0.44,
-                                        height: size.height * 0.36,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
+                                      GestureDetector(
+                                            onTap: ()  {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (_) => CoursesPage(
+                                                    currentLevel: provider
+                                                        .model!
+                                                        .departments
+                                                        .first
+                                                        .levels[2],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                        child: Container(
+                                          width: size.width * 0.44,
+                                          height: size.height * 0.36,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              image: DecorationImage(
+                                                colorFilter: controller.isDarkMode
+                                                    ? const ColorFilter.mode(
+                                                        Color.fromARGB(
+                                                            96, 0, 0, 0),
+                                                        BlendMode.srcOver,
+                                                      )
+                                                    : const ColorFilter.mode(
+                                                        Color(0xA0000000),
+                                                        BlendMode.srcOver,
+                                                      ),
+                                                fit: BoxFit.cover,
+                                                image: const AssetImage(
+                                                    'assets/300.png'),
+                                              ),
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0)),
+                                          child: Text(
+                                            '300 lvl',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                            onTap: ()  {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (_) => CoursesPage(
+                                                    currentLevel: provider
+                                                        .model!
+                                                        .departments
+                                                        .first
+                                                        .levels[3],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                        child: Container(
+                                          width: double.maxFinite,
+                                          height: size.height * 0.18,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                             image: DecorationImage(
                                               colorFilter: controller.isDarkMode
                                                   ? const ColorFilter.mode(
-                                                    Color.fromARGB(96, 0, 0, 0),
-                                                    BlendMode.srcOver,
-                                                  )
+                                                      Color.fromARGB(96, 0, 0, 0),
+                                                      BlendMode.srcOver,
+                                                    )
                                                   : const ColorFilter.mode(
                                                       Color(0xA0000000),
                                                       BlendMode.srcOver,
                                                     ),
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.cover,
                                               image: const AssetImage(
-                                                  'assets/300.jpg'),
+                                                  'assets/400.png'),
                                             ),
                                             color: const Color.fromARGB(
-                                                255, 0, 0, 0)),
-                                        child: Text(
-                                          '300 lvl',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(color: Colors.white),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: double.maxFinite,
-                                        height: size.height * 0.18,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          image: DecorationImage(
-                                            colorFilter: controller.isDarkMode
-                                                ? const ColorFilter.mode(
-                                                    Color.fromARGB(96, 0, 0, 0),
-                                                    BlendMode.srcOver,
-                                                  )
-                                                : const ColorFilter.mode(
-                                                    Color(0xA0000000),
-                                                    BlendMode.srcOver,
-                                                  ),
-                                            fit: BoxFit.fill,
-                                            image: const AssetImage(
-                                                'assets/400.png'),
+                                                255, 0, 0, 0),
                                           ),
-                                          color: const Color.fromARGB(
-                                              255, 0, 0, 0),
-                                        ),
-                                        child: Text(
-                                          '400 lvl',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(color: Colors.white),
+                                          child: Text(
+                                            '400 lvl',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -396,7 +436,9 @@ class _DashboardState extends State<Dashboard>
                                               Icons.arrow_back_ios_new_rounded),
                                         ),
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            print(scrollCtrl.offset);
+                                          },
                                           icon: const Icon(
                                               Icons.arrow_forward_ios_rounded),
                                         ),
@@ -407,6 +449,8 @@ class _DashboardState extends State<Dashboard>
                                 Flexible(
                                   fit: FlexFit.tight,
                                   child: SingleChildScrollView(
+                                    controller: scrollCtrl,
+                                    physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 12.0),

@@ -15,33 +15,44 @@ class CourseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.1,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      height: size.height * 0.08,
+      margin: const EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: 16,
+      ),
+      padding: const EdgeInsets.all(16),
       width: double.maxFinite,
       decoration: BoxDecoration(
-        color: Colors.red,
-        border: Border.all(
-          width: 1.5,
-          color: Theme.of(context).primaryColor,
-        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        boxShadow: const[
+          BoxShadow(
+            color: Colors.black,
+            blurRadius: 0.7,
+          ),
+        ],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
           Container(
             height: double.maxFinite,
-            width: 55,
+            width: 10,
+            margin: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-            color: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 courseCode,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
+           const   SizedBox(height: 4,),
               Text(
                 courseTitle,
                 style: Theme.of(context)

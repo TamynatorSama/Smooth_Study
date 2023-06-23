@@ -5,6 +5,7 @@ import 'package:smooth_study/utils/storage_manager.dart';
 
 class ThemeProvider with ChangeNotifier {
   final darkTheme = ThemeData(
+    primaryColor: Colors.white,
     canvasColor: const Color(0xFF6259FF),
     textTheme: TextTheme(
       bodyMedium: GoogleFonts.josefinSans(
@@ -23,16 +24,16 @@ class ThemeProvider with ChangeNotifier {
     ),
     scaffoldBackgroundColor: Colors.black,
     primarySwatch: Colors.grey,
-    primaryColor: Colors.white,
     brightness: Brightness.dark,
     dividerColor: Colors.black12,
     buttonTheme: const ButtonThemeData(
       buttonColor: Color(0xFF383838),
     ),
-    cardColor: const Color(0xFF6259FF),
+    cardColor: const Color(0xFF1D1D1D),
   );
 
   final lightTheme = ThemeData(
+    primaryColor: Colors.black,
     canvasColor: const Color(0xFF6259FF),
     textTheme: TextTheme(
       bodyMedium: GoogleFonts.josefinSans(
@@ -51,13 +52,12 @@ class ThemeProvider with ChangeNotifier {
     ),
     scaffoldBackgroundColor: Colors.white,
     primarySwatch: Colors.grey,
-    primaryColor: Colors.black,
     brightness: Brightness.light,
     dividerColor: Colors.white54,
     buttonTheme: const ButtonThemeData(
       buttonColor: Color(0xFF1D1D1D),
     ),
-    cardColor: const Color(0xFF6259FF),
+    cardColor: const Color(0xFF383838),
   );
 
   late bool isDarkMode = false;
@@ -96,7 +96,7 @@ class ThemeProvider with ChangeNotifier {
     isDarkMode = true;
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: Colors.black,
         statusBarColor: Colors.transparent,
       ),
     );

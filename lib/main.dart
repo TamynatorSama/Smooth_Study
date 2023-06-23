@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/firebase_options.dart';
-import 'package:smooth_study/screens/audio_page.dart';
+import 'package:smooth_study/screens/dashboard.dart';
 import 'package:smooth_study/utils/storage_manager.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/utils/material_box.dart';
@@ -57,7 +57,7 @@ class _MainAppState extends State<MainApp> {
         return MaterialApp(
           theme: controller.getTheme(),
           debugShowCheckedModeBanner: false,
-          home: const AudioPage(audioTitle: 'CSC 101',),
+          home: const Dashboard(),
         );
       },
     );

@@ -95,9 +95,11 @@ class AudioPage extends StatelessWidget {
               width: size.width * 0.75,
               child: Column(
                 children: [
-                  const LinearProgressIndicator(
+                  LinearProgressIndicator(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: BorderRadius.circular(18),
                     value: 0.75,
-                    minHeight: 16,
+                    minHeight: 12,
                   ),
                   const SizedBox(
                     height: 4,
@@ -125,7 +127,7 @@ class AudioPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 16,
+              height: 32,
             ),
             Container(
               margin: const EdgeInsets.only(left: 36),
@@ -142,6 +144,9 @@ class AudioPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+                    height: 12,
+                  ),
           ],
         ),
       ),
