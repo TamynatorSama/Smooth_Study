@@ -6,6 +6,7 @@ class RecentWidget extends StatelessWidget {
   final String title;
   final bool isDoc;
   final Size size;
+  final double value; 
 
   const RecentWidget({
     super.key,
@@ -13,6 +14,7 @@ class RecentWidget extends StatelessWidget {
     required this.title,
     required this.size,
     this.isDoc = false,
+    this.value = 0
   });
 
   @override
@@ -26,10 +28,10 @@ class RecentWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       width: size.width * 0.6,
-      height: size.height * 0.2,
+      // height: size.height * 0.2,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             courseCode,
@@ -39,7 +41,7 @@ class RecentWidget extends StatelessWidget {
                 ?.copyWith(color: Colors.white),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 22.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Row(
               children: [
                 CircleAvatar(
@@ -53,12 +55,17 @@ class RecentWidget extends StatelessWidget {
                 const SizedBox(
                   width: 16,
                 ),
-                Text(
-                  title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.white),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: size.width * 0.32),
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.white,fontSize: 12),
+                  ),
                 ),
               ],
             ),
@@ -68,7 +75,7 @@ class RecentWidget extends StatelessWidget {
           ),
           LinearProgressIndicator(
             minHeight: 4,
-            value: 0.3,
+            value: value,
             color: const Color(0xFBFFFFFF),
             backgroundColor: const Color(0xFF000000).withOpacity(0.3),
           ),

@@ -44,7 +44,6 @@ class _PdfViewPageState extends State<PdfViewPage> {
 
   downloadFile(String downloadLink) async {
     String? path =  await downloadNotifier.downloadMaterial(storageIO: storageIO,downloadLink: widget.materialModel.filePath,fileName: widget.materialModel.fileName);
-    print(path);
     if( path !=null && path.isNotEmpty){
       widget.materialModel.filePath = path;
       widget.materialModel.isLocal = true;

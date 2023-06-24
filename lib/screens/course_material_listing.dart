@@ -186,13 +186,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                               children: [
                                 ListTile(
                                   onTap: () async {
-                                    // Navigator.of(
-                                    //         context)
-                                    //     .push(MaterialPageRoute(
-                                    //         builder: (context) => PdfViewTest(
-                                    //               materialModel:
-                                    //                   materials[index],
-                                    //             )));
+                                    
                                     var resentlyView = await Navigator.of(
                                             context)
                                         .push(MaterialPageRoute(
