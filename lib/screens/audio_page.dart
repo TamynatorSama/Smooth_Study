@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_study/model/material_model.dart';
+import 'package:just_audio/just_audio.dart';
 
-class AudioPage extends StatelessWidget {
-  final String audioTitle;
+class AudioPage extends StatefulWidget {
+  final MaterialModel material;
   const AudioPage({
     super.key,
-    required this.audioTitle,
+    required this.material,
   });
+
+  @override
+  State<AudioPage> createState() => _AudioPageState();
+}
+
+class _AudioPageState extends State<AudioPage> {
+  late AudioPlayer audioPlayer;
+
+  @override
+  initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+    if (widget.material.isLocal) {
+      audioPlayer.setFilePath(widget.material.filePath);
+    } else {
+      audioPlayer.setUrl(widget.material.filePath);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +61,7 @@ class AudioPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    audioTitle,
+                    widget.material.fileName,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.white,
                         ),
@@ -76,10 +96,21 @@ class AudioPage extends StatelessWidget {
                   color: Theme.of(context).cardColor,
                   size: 48,
                 ),
-                Icon(
-                  Icons.play_arrow_rounded,
-                  color: Theme.of(context).cardColor,
-                  size: 78,
+                IconButton(
+                  onPressed: () {
+                    audioPlayer.play();
+                  },
+                  icon: audioPlayer.playing
+                      ? Icon(
+                          Icons.pause,
+                          color: Theme.of(context).cardColor,
+                          size: 78,
+                        )
+                      : Icon(
+                          Icons.play_arrow_rounded,
+                          color: Theme.of(context).cardColor,
+                          size: 78,
+                        ),
                 ),
                 Icon(
                   Icons.fast_forward_rounded,
@@ -98,7 +129,7 @@ class AudioPage extends StatelessWidget {
                   LinearProgressIndicator(
                     color: Theme.of(context).canvasColor,
                     borderRadius: BorderRadius.circular(18),
-                    value: 0.75,
+                    value: audioPlayer.position.inSeconds.toDouble(),
                     minHeight: 12,
                   ),
                   const SizedBox(
@@ -145,8 +176,8 @@ class AudioPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-                    height: 12,
-                  ),
+              height: 12,
+            ),
           ],
         ),
       ),
