@@ -8,10 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/model/material_model.dart';
-import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/material_box.dart';
-import 'package:smooth_study/utils/recently_viewed_box.dart';
-import 'package:smooth_study/utils/theme.dart';
+import 'package:smooth_study/utils/theme_provider.dart';
+import './audio_page.dart';
 
 class CourseMaterialListing extends StatefulWidget {
   final Courses course;
@@ -62,23 +61,23 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
     return Scaffold(
       body: isLoading
           ? Center(
-                      child: SizedBox(
-                      height: 0.15 * size.width,
-                      width: 0.15 * size.width,
-                      child: SpinKitChasingDots(
-                        itemBuilder: (context, index) {
-                          return DecoratedBox(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: index % 2 == 0
-                                  ? const Color.fromARGB(255, 233, 119, 149)
-                                  : const Color(0xff6259FF),
-                            ),
-                          );
-                        },
+              child: SizedBox(
+                height: 0.15 * size.width,
+                width: 0.15 * size.width,
+                child: SpinKitChasingDots(
+                  itemBuilder: (context, index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index % 2 == 0
+                            ? const Color.fromARGB(255, 233, 119, 149)
+                            : const Color(0xff6259FF),
                       ),
-                    ),
-                    )
+                    );
+                  },
+                ),
+              ),
+            )
           : Column(
               children: [
                 Container(
@@ -111,10 +110,13 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                   child: Text(
                                     widget.course.courseTitle,
                                     textAlign: TextAlign.center,
-                                    style: primaryTextStyle.copyWith(
-                                        fontSize: 32,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            // fontSize: 32,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
                                   ),
                                 )),
                           ],
@@ -137,46 +139,56 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search_rounded),
-                        hintText: "Search Course",
-                        filled: true,
-                        fillColor: const Color.fromARGB(255, 233, 233, 233),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
+                  child: Consumer<ThemeProvider>(
+              builder: (context, themeCtrl, _) => TextFormField(
+                decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: themeCtrl.isDarkMode ? null : const Color(0xAAFFFFFF),
+                    ),
+                    hintText: "Search Material",
+                    hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xAAFFFFFF),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 16)),
-                    style: primaryTextStyle,
-                  ),
+                    filled: true,
+                    fillColor: Theme.of(context).cardColor,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(54),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(54),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(54),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(54),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(54),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 16)),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: themeCtrl.isDarkMode ? null : Colors.white,
+                    ),
+              ),
+            ),
                 ),
                 // const SizedBox(height: 10),
                 Expanded(
@@ -243,25 +255,6 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                             )))
               ],
             ),
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: const Color(0xff6259FF),
-          extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          label: Row(
-            children: [
-              const Icon(Icons.add),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                "Add Note",
-                style: primaryTextStyle.copyWith(
-                    fontSize: 16, color: Colors.white),
-              ),
-            ],
-          ),
-          onPressed: () {}),
     );
   }
 

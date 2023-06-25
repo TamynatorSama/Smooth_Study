@@ -17,12 +17,16 @@ class AppProvider extends ChangeNotifier {
     FirebaseFirestore cloudFireStore = FirebaseFirestore.instance;
     final ref = cloudFireStore.collection(collectionName);
     try {
-      if(error){
+      if (error) {
         error = false;
         notifyListeners();
       }
       final docs = await ref.get();
-      model = SmoothStudyModel.fromJson(docs.docs.first.data());
+      try {
+        model = SmoothStudyModel.fromJson(docs.docs.first.data());
+      } catch (e) {
+        print('e $e');
+      }
     } on FirebaseException {
       if (model == null) {
         error = true;
@@ -37,7 +41,6 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> getMaterials(String materialPath) async {
-
     List<MaterialModel> coursesMaterial = [];
     List<MaterialModel>? cachedMaterials =
         MaterialBox.getMaterial(materialPath);
@@ -63,8 +66,9 @@ class AppProvider extends ChangeNotifier {
               "data": coursesMaterial
             };
           } else {
-            var downloadedMaterials =
-                cachedMaterials.where((element) => element.hasBeenModified).toList();
+            var downloadedMaterials = cachedMaterials
+                .where((element) => element.hasBeenModified)
+                .toList();
 
             List<MaterialModel> newCourseMaterial = coursesMaterial.map((e) {
               if (downloadedMaterials
@@ -86,8 +90,8 @@ class AppProvider extends ChangeNotifier {
             };
           }
         }
-        MaterialBox.materialBox
-            .put(materialPath, coursesMaterial.map((e) => jsonEncode(e.toJson())).toList());
+        MaterialBox.materialBox.put(materialPath,
+            coursesMaterial.map((e) => jsonEncode(e.toJson())).toList());
 
         return {
           "status": true,
@@ -115,7 +119,6 @@ class AppProvider extends ChangeNotifier {
       };
     }
   }
-
 }
 
 extension on List {
