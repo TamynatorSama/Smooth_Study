@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/model/material_model.dart';
+import 'package:smooth_study/screens/pdf_view_page.dart';
 import 'package:smooth_study/utils/material_box.dart';
+import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import './audio_page.dart';
 
@@ -140,55 +142,58 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Consumer<ThemeProvider>(
-              builder: (context, themeCtrl, _) => TextFormField(
-                decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search_rounded,
-                      color: themeCtrl.isDarkMode ? null : const Color(0xAAFFFFFF),
+                    builder: (context, themeCtrl, _) => TextFormField(
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: themeCtrl.isDarkMode
+                                ? null
+                                : const Color(0xAAFFFFFF),
+                          ),
+                          hintText: "Search Material",
+                          hintStyle:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: const Color(0xAAFFFFFF),
+                                  ),
+                          filled: true,
+                          fillColor: Theme.of(context).cardColor,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(54),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(54),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(54),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(54),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(54),
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 16)),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: themeCtrl.isDarkMode ? null : Colors.white,
+                          ),
                     ),
-                    hintText: "Search Material",
-                    hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: const Color(0xAAFFFFFF),
-                        ),
-                    filled: true,
-                    fillColor: Theme.of(context).cardColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(54),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(54),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(54),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(54),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(54),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16)),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: themeCtrl.isDarkMode ? null : Colors.white,
-                    ),
-              ),
-            ),
+                  ),
                 ),
                 // const SizedBox(height: 10),
                 Expanded(
@@ -198,7 +203,20 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                               children: [
                                 ListTile(
                                   onTap: () async {
-                                    
+                                    if (materials[index]
+                                        .fileName
+                                        .split('.')
+                                        .last
+                                        .contains('mp')) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => AudioPage(
+                                                    material: materials[index],
+                                                  )));
+                                                  return;
+                                    }
+
                                     var resentlyView = await Navigator.of(
                                             context)
                                         .push(MaterialPageRoute(
@@ -206,7 +224,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                                   materialModel:
                                                       materials[index],
                                                 )));
-                                                
+
                                     if (resentlyView != null) {
                                       RecentViewedBox.addToList(resentlyView);
                                       updateMaterial(resentlyView);
@@ -216,17 +234,27 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                     radius: 25,
                                     backgroundColor: const Color.fromARGB(
                                         255, 228, 228, 228),
-                                    child: SvgPicture.asset(
-                                      'assets/svg/bxs_file-doc.svg',
-                                      width: 25,
-                                    ),
+                                    child: materials[index]
+                                            .fileName
+                                            .split('.')
+                                            .last
+                                            .contains('mp')
+                                        ? const Icon(Icons.music_note_rounded)
+                                        : SvgPicture.asset(
+                                            'assets/svg/bxs_file-doc.svg',
+                                            width: 25,
+                                          ),
                                   ),
-                                  title: Text(materials[index].fileName,
-                                      maxLines: 2,
-                                      style: primaryTextStyle.copyWith(
+                                  title: Text(
+                                    materials[index].fileName,
+                                    maxLines: 2,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
                                           fontSize: 15,
-                                          color: const Color.fromARGB(
-                                              255, 56, 56, 56))),
+                                        ),
+                                  ),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 15.0),
                                     child: LinearProgressIndicator(

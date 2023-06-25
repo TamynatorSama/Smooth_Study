@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/material_model.dart';
@@ -24,6 +25,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
 
   late PdfViewerController _pdfViewerController;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
+  late Uint8List wordInBytes;
 
   @override
   void initState() {
@@ -100,6 +102,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
                         icon: const Icon(
                           Icons.arrow_back_ios_rounded,
                           size: 18,
+                          color: Colors.white,
                         )),
                     actions: [
                       downloadNotifier.downloads.containsKey(widget.materialModel.fileName) ? ConstrainedBox(
@@ -121,12 +124,14 @@ class _PdfViewPageState extends State<PdfViewPage> {
                           icon: Icon(
                             widget.materialModel.isLocal? Icons.check_circle_rounded :Icons.cloud_download_rounded,
                             size: 20,
+                            color: Colors.white,
                           )),
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(
                             Icons.add,
                             size: 20,
+                            color: Colors.white,
                           )),
                     ],
                   );
@@ -140,6 +145,11 @@ class _PdfViewPageState extends State<PdfViewPage> {
                   key: _pdfViewerKey,
                   controller: _pdfViewerController,
                   pageLayoutMode: PdfPageLayoutMode.continuous,
+                  onDocumentLoadFailed: (failedDetails) async {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(failedDetails.description)));
+                    Navigator.pop(context);
+                  },
                   onDocumentLoaded: (details) {
                     shouldHide = true;
                     widget.materialModel.totalPages =
@@ -199,3 +209,26 @@ class _PdfViewPageState extends State<PdfViewPage> {
     );
   }
 }
+// !widget.materialModel.filePath.split(".").last.contains("pdf")?
+//           SfPdfViewer.memory(wordInBytes,key: _pdfViewerKey,
+//                   controller: _pdfViewerController,
+//                   pageLayoutMode: PdfPageLayoutMode.continuous,
+//                   onDocumentLoaded: (details) {
+//                     shouldHide = true;
+//                     widget.materialModel.totalPages =
+//                         details.document.pages.count;
+//                     if (widget.materialModel.hasBeenModified == false) {
+//                       widget.materialModel.hasBeenModified = true;
+//                     }
+//                     _pdfViewerController.jumpToPage(
+//                         widget.materialModel.initialPage == 0
+//                             ? 1
+//                             : widget.materialModel.initialPage);
+//                   },
+//                   onPageChanged: (details) {
+//                     if (widget.materialModel.hasBeenModified == false) {
+//                       widget.materialModel.hasBeenModified = true;
+//                     }
+//                     widget.materialModel.initialPage = details.newPageNumber;
+//                   },)
+//            :

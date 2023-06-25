@@ -20,11 +20,11 @@ class LevelHolder extends StatelessWidget {
           image: DecorationImage(
             colorFilter: Provider.of<ThemeProvider>(context).isDarkMode
                 ? const ColorFilter.mode(
-                    Color.fromARGB(96, 0, 0, 0),
+                    Color.fromARGB(156, 0, 0, 0),
                     BlendMode.srcOver,
                   )
                 : const ColorFilter.mode(
-                    Color(0xA0000000),
+                    Color.fromARGB(78, 0, 0, 0),
                     BlendMode.srcOver,
                   ),
             fit: BoxFit.fill,

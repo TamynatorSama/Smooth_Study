@@ -15,7 +15,7 @@ class CourseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.08,
+      height: (size.height * 0.08).clamp(65, 75),
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,
@@ -34,10 +34,13 @@ class CourseWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
+          Row(
+            children: [
+              Container(
             height: double.maxFinite,
-            width: 10,
+            width: 6,
             margin: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
@@ -62,7 +65,10 @@ class CourseWidget extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
+          
+            ],
+          ),
+          // const Spacer(),
           const Icon(Icons.arrow_forward_ios_rounded)
         ],
       ),

@@ -4,7 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
+import 'package:smooth_study/model/material_model.dart';
+import 'package:smooth_study/screens/audio_page.dart';
 import 'package:smooth_study/screens/dashboard/resuables/level_holder.dart';
+import 'package:smooth_study/screens/pdf_view_page.dart';
+import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/recent_widget.dart';
@@ -192,9 +196,9 @@ class _DashboardState extends State<Dashboard>
                           )))
                         : Expanded(
                             child: ScrollConfiguration(
-                              behavior: const ScrollBehavior().copyWith(overscroll: false),
+                              behavior: const ScrollBehavior()
+                                  .copyWith(overscroll: false),
                               child: SingleChildScrollView(
-                                
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -205,7 +209,12 @@ class _DashboardState extends State<Dashboard>
                                     ),
                                     Text(
                                       'Levels',
-                                      style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 25,fontWeight: FontWeight.w500),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w500),
                                     ),
                                     const SizedBox(
                                       height: 16,
@@ -220,74 +229,113 @@ class _DashboardState extends State<Dashboard>
                                                 child: Column(
                                                   children: [
                                                     GestureDetector(
-                                                      onTap: (){
-                                                         Navigator.of(context).push(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
                                                                 MaterialPageRoute(
-                                                                  builder: (_) => CoursesPage(
-                                                                      currentLevel: provider.model!.departments[0].levels[0]
-                                                                          ),
-                                                                ));
+                                                          builder: (_) => CoursesPage(
+                                                              currentLevel: provider
+                                                                  .model!
+                                                                  .departments[
+                                                                      0]
+                                                                  .levels[0]),
+                                                        ));
                                                       },
                                                       child: LevelHolder(
-                                                        shape: HolderShape.normal,
-                                                        backgroundImage: 'assets/100.jpg',
-                                                        text: provider.model!.departments[0].levels[0].levelName,
+                                                        shape:
+                                                            HolderShape.normal,
+                                                        backgroundImage:
+                                                            'assets/100.png',
+                                                        text: provider
+                                                            .model!
+                                                            .departments[0]
+                                                            .levels[0]
+                                                            .levelName,
                                                       ),
                                                     ),
-                                                    const SizedBox(height: 10,),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
                                                     GestureDetector(
-                                                      onTap: (){
-                                                         Navigator.of(context).push(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
                                                                 MaterialPageRoute(
-                                                                  builder: (_) => CoursesPage(
-                                                                      currentLevel: provider.model!.departments[0].levels[1]
-                                                                          ),
-                                                                ));
+                                                          builder: (_) => CoursesPage(
+                                                              currentLevel: provider
+                                                                  .model!
+                                                                  .departments[
+                                                                      0]
+                                                                  .levels[1]),
+                                                        ));
                                                       },
                                                       child: LevelHolder(
-                                                        shape: HolderShape.normal,
-                                                        backgroundImage: 'assets/200.jpg',
-                                                        text: provider.model!.departments[0].levels[1].levelName,
+                                                        shape:
+                                                            HolderShape.normal,
+                                                        backgroundImage:
+                                                            'assets/200.png',
+                                                        text: provider
+                                                            .model!
+                                                            .departments[0]
+                                                            .levels[1]
+                                                            .levelName,
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                                
                                               ),
-                                              const SizedBox(width: 10,),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
                                               Expanded(
                                                 child: GestureDetector(
-                                                  onTap: (){
-                                                         Navigator.of(context).push(
-                                                                MaterialPageRoute(
-                                                                  builder: (_) => CoursesPage(
-                                                                      currentLevel: provider.model!.departments[0].levels[2]
-                                                                          ),
-                                                                ));
-                                                      },
+                                                  onTap: () {
+                                                    Navigator.of(context)
+                                                        .push(MaterialPageRoute(
+                                                      builder: (_) => CoursesPage(
+                                                          currentLevel: provider
+                                                              .model!
+                                                              .departments[0]
+                                                              .levels[2]),
+                                                    ));
+                                                  },
                                                   child: LevelHolder(
-                                                    shape: HolderShape.spanHeight,
-                                                    backgroundImage: 'assets/300.jpg',
-                                                    text: provider.model!.departments[0].levels[2].levelName,
+                                                    shape:
+                                                        HolderShape.spanHeight,
+                                                    backgroundImage:
+                                                        'assets/300.png',
+                                                    text: provider
+                                                        .model!
+                                                        .departments[0]
+                                                        .levels[2]
+                                                        .levelName,
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           GestureDetector(
-                                            onTap: (){
-                                                         Navigator.of(context).push(
-                                                                MaterialPageRoute(
-                                                                  builder: (_) => CoursesPage(
-                                                                      currentLevel: provider.model!.departments[0].levels[3]
-                                                                          ),
-                                                                ));
-                                                      },
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (_) => CoursesPage(
+                                                    currentLevel: provider
+                                                        .model!
+                                                        .departments[0]
+                                                        .levels[3]),
+                                              ));
+                                            },
                                             child: LevelHolder(
                                               shape: HolderShape.spanWidth,
                                               backgroundImage: 'assets/400.png',
-                                              text: provider.model!.departments[0].levels[3].levelName,
+                                              text: provider
+                                                  .model!
+                                                  .departments[0]
+                                                  .levels[3]
+                                                  .levelName,
                                             ),
                                           )
                                         ],
@@ -305,7 +353,7 @@ class _DashboardState extends State<Dashboard>
                                       //       QuiltedGridTile(2, 2),
                                       //       QuiltedGridTile(1, 2),
                                       //       QuiltedGridTile(1, 4),
-                              
+
                                       //     ],
                                       //   ),
                                       //   childrenDelegate: SliverChildBuilderDelegate(
@@ -354,7 +402,7 @@ class _DashboardState extends State<Dashboard>
                                       //   ),
                                       //                                 ),
                                       // );
-                              
+
                                       // return Wrap(
                                       //   spacing: 16,
                                       //   runSpacing: 16,
@@ -531,8 +579,12 @@ class _DashboardState extends State<Dashboard>
                                       children: [
                                         Text(
                                           'Recent',
-                                          style:
-                                              Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 25,fontWeight: FontWeight.w500),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w500),
                                         ),
                                         // Row(
                                         //   mainAxisAlignment:
@@ -542,7 +594,7 @@ class _DashboardState extends State<Dashboard>
                                         //       onPressed: () {},
                                         //       icon: const Icon(
                                         //           Icons.arrow_back_ios_new_rounded),
-                                                  
+
                                         //     ),
                                         //     IconButton(
                                         //       onPressed: () {},
@@ -553,22 +605,86 @@ class _DashboardState extends State<Dashboard>
                                         // ),
                                       ],
                                     ),
-                                    RecentViewedBox.recentlyViewed.isEmpty? const Text('No Recent Docs'):SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 12.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: List.generate(RecentViewedBox.recentlyViewed.length, (index) => RecentWidget(
-                                              courseCode: 'CSC 101',
-                                              title: RecentViewedBox.recentlyViewed[index].fileName,
-                                              size: size,
-                                              value: RecentViewedBox.recentlyViewed[index].totalPages == null?0:RecentViewedBox.recentlyViewed[index].initialPage/RecentViewedBox.recentlyViewed[index].totalPages!,
-                                            ),)
-                                        ),
-                                      ),
-                                    )
+                                    RecentViewedBox.recentlyViewed.isEmpty
+                                        ? const Text('No Recent Docs')
+                                        : SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12.0),
+                                              child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: List.generate(
+                                                    RecentViewedBox
+                                                        .recentlyViewed.length,
+                                                    (index) => GestureDetector(
+                                                      onTap: () async {
+                                                        if (RecentViewedBox
+                                                            .recentlyViewed[
+                                                                index]
+                                                            .fileName
+                                                            .split('.')
+                                                            .last
+                                                            .contains('mp')) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          AudioPage(
+                                                                            material:
+                                                                                RecentViewedBox.recentlyViewed[index],
+                                                                          )));
+                                                          return;
+                                                        }
+
+                                                        var resentlyView = await Navigator
+                                                                .of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            PdfViewPage(
+                                                                              materialModel: RecentViewedBox.recentlyViewed[index],
+                                                                            )));
+
+                                                        if (resentlyView !=
+                                                            null) {
+                                                          RecentViewedBox
+                                                              .addToList(
+                                                                  resentlyView);
+                                                          updateMaterial(
+                                                              resentlyView);
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                      child: RecentWidget(
+                                                        courseCode: 'CSC 101',
+                                                        title: RecentViewedBox
+                                                            .recentlyViewed[
+                                                                index]
+                                                            .fileName,
+                                                        size: size,
+                                                        value: RecentViewedBox
+                                                                    .recentlyViewed[
+                                                                        index]
+                                                                    .totalPages ==
+                                                                null
+                                                            ? 0
+                                                            : RecentViewedBox
+                                                                    .recentlyViewed[
+                                                                        index]
+                                                                    .initialPage /
+                                                                RecentViewedBox
+                                                                    .recentlyViewed[
+                                                                        index]
+                                                                    .totalPages!,
+                                                      ),
+                                                    ),
+                                                  )),
+                                            ),
+                                          )
                                   ],
                                 ),
                               ),
@@ -581,4 +697,10 @@ class _DashboardState extends State<Dashboard>
       ),
     );
   }
+}
+
+void updateMaterial(MaterialModel model) {
+  // List<MaterialModel>? materials=MaterialBox.getMaterial(model.) ;
+  // MaterialBox.materialBox.put(widget.course.materialFolder,
+  //     materials.map((e) => jsonEncode(e.toJson())).toList());
 }

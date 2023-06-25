@@ -29,58 +29,63 @@ class RecentWidget extends StatelessWidget {
       ),
       width: size.width * 0.6,
       // height: size.height * 0.2,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
+
         children: [
-          Text(
-            courseCode,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: Colors.white),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: const Color.fromARGB(255, 228, 228, 228),
-                  child: SvgPicture.asset(
-                    'assets/svg/bxs_file-doc.svg',
-                    width: 25,
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                courseCode,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Colors.white),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: const Color.fromARGB(255, 228, 228, 228),
+                      child: SvgPicture.asset(
+                        'assets/svg/bxs_file-doc.svg',
+                        width: 25,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: size.width * 0.32),
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Colors.white,fontSize: 12),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 16,
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: size.width * 0.32),
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.white,fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          LinearProgressIndicator(
-            minHeight: 4,
-            value: value,
-            color: const Color(0xFBFFFFFF),
-            backgroundColor: const Color(0xFF000000).withOpacity(0.3),
-          ),
-          const SizedBox(
-            height: 12,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              LinearProgressIndicator(
+                minHeight: 4,
+                value: value,
+                color: const Color(0xFBFFFFFF),
+                backgroundColor: const Color(0xFF000000).withOpacity(0.3),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+            ],
           ),
         ],
       ),
