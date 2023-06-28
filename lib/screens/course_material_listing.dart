@@ -493,7 +493,6 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                   ),
                                   trailing: IconButton(
                                     onPressed: () {
-                                      print('HETE');
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (_) => AllNotesViewPage(

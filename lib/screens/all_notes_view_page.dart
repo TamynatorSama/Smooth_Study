@@ -7,7 +7,6 @@ import 'package:smooth_study/screens/single_note_view_page.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/music_notes_widget.dart';
 import 'package:uuid/uuid.dart';
-import '../utils/personal_notes_box.dart';
 
 class AllNotesViewPage extends StatefulWidget {
   final String courseCode;

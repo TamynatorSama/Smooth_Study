@@ -36,7 +36,7 @@ class AppProvider extends ChangeNotifier {
       note: note,
     );
 
-    if(newNotes != null) {
+    if (newNotes != null) {
       notes = newNotes;
       notifyListeners();
     }
@@ -53,9 +53,7 @@ class AppProvider extends ChangeNotifier {
       final docs = await ref.get();
       try {
         model = SmoothStudyModel.fromJson(docs.docs.first.data());
-      } catch (e) {
-        print('e $e');
-      }
+      } catch (_) {}
     } on FirebaseException {
       if (model == null) {
         error = true;
@@ -185,7 +183,6 @@ class AppProvider extends ChangeNotifier {
         .toList();
 
     final nonNullRes = results.where((element) => element != null).toList();
-    print(nonNullRes);
 
     if (nonNullRes.isEmpty) {
       materialsSearched = true;

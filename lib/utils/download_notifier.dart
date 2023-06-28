@@ -35,7 +35,6 @@ class DownloadNotifier extends ChangeNotifier {
           location: dir.path,
         ),
       );
-      print(downloads);
       downloads.remove(fileName);
       notifyListeners();
       return filePath;
