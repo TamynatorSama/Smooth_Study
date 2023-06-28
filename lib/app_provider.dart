@@ -5,13 +5,42 @@ import 'package:flutter/material.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:smooth_study/model/material_model.dart';
+import 'package:smooth_study/model/notes_model.dart';
 import 'package:smooth_study/utils/constants.dart';
 import 'package:smooth_study/utils/material_box.dart';
+import 'package:smooth_study/utils/personal_notes_box.dart';
 
 class AppProvider extends ChangeNotifier {
   SmoothStudyModel? model;
+  List<NoteModel?> noteSearchResult = [];
+  bool notesSearched = false;
+  List<Courses?> courseSearchResult = [];
+  bool coursesSearched = false;
+  List<MaterialModel?> materialSearchResult = [];
+  bool materialsSearched = false;
 
+  List<NoteModel> notes = [];
   bool error = false;
+
+  getNotes(String materialName) {
+    notes = PersonalNotesBox().getNotes(materialName);
+    notifyListeners();
+  }
+
+  deleteNote({
+    required String materialName,
+    required NoteModel note,
+  }) {
+    final newNotes = PersonalNotesBox().deleteNote(
+      materialName: materialName,
+      note: note,
+    );
+
+    if(newNotes != null) {
+      notes = newNotes;
+      notifyListeners();
+    }
+  }
 
   Future<void> getListOfCourses() async {
     FirebaseFirestore cloudFireStore = FirebaseFirestore.instance;
@@ -118,6 +147,104 @@ class AppProvider extends ChangeNotifier {
         "data": cachedMaterials
       };
     }
+  }
+
+  void searchMaterials({
+    required String value,
+    required int lvl,
+    required Courses course,
+  }) {
+    final materialCourse = model!.departments[0].levels[lvl].courses.firstWhere(
+      (indexCourse) => indexCourse == course,
+      orElse: () => Courses(
+        courseCode: 'courseCode',
+        courseTitle: 'courseTitle',
+        materialFolder: 'materialFolder',
+      ),
+    );
+    if (materialCourse.courseCode == 'courseCode') {
+      coursesSearched = true;
+      notifyListeners();
+      return;
+    }
+
+    final allMaterials = MaterialBox.getMaterial(materialCourse.materialFolder);
+    if (allMaterials == null) {
+      coursesSearched = true;
+      notifyListeners();
+      return;
+    }
+
+    final results = allMaterials
+        .map(
+          (material) =>
+              material.fileName.contains(value) || material.fileName == value
+                  ? material
+                  : null,
+        )
+        .toList();
+
+    final nonNullRes = results.where((element) => element != null).toList();
+    print(nonNullRes);
+
+    if (nonNullRes.isEmpty) {
+      materialsSearched = true;
+      notifyListeners();
+      return;
+    }
+
+    materialSearchResult = nonNullRes;
+    materialsSearched = true;
+    notifyListeners();
+  }
+
+  void clearMaterialSearch() {
+    materialsSearched = false;
+    materialSearchResult = [];
+    notifyListeners();
+  }
+
+  void searchCourses({
+    required String value,
+    required int lvl,
+  }) {
+    final courses = model!.departments[0].levels[lvl].courses;
+    final results = courses.map((course) {
+      return course.courseCode.contains(value) ||
+              course.courseTitle.contains(value) ||
+              course.courseCode == value ||
+              course.courseTitle == value
+          ? course
+          : null;
+    }).toList();
+
+    final nonNullRes = results.where((element) => element != null).toList();
+    if (nonNullRes.isEmpty) {
+      coursesSearched = true;
+      notifyListeners();
+      return;
+    }
+    courseSearchResult = nonNullRes;
+    coursesSearched = true;
+    notifyListeners();
+  }
+
+  void clearCoursesSearch() {
+    coursesSearched = false;
+    courseSearchResult = [];
+    notifyListeners();
+  }
+
+  void searchNotes(String value) {
+    noteSearchResult = PersonalNotesBox().searchNotes(value);
+    notesSearched = true;
+    notifyListeners();
+  }
+
+  void clearNotesSearch() {
+    notesSearched = false;
+    noteSearchResult = [];
+    notifyListeners();
   }
 }
 

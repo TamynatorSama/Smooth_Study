@@ -9,10 +9,8 @@ class SmoothStudyModel {
         .toList();
   }
 
-  Map<String,dynamic> toJson()=>{
-    "department":departments.map((e) => e.toJson()).toList()
-  };
-
+  Map<String, dynamic> toJson() =>
+      {"department": departments.map((e) => e.toJson()).toList()};
 }
 
 class DepartmentModel {
@@ -26,11 +24,10 @@ class DepartmentModel {
     levels = (json["levels"] as List).map((e) => Level.fromJson(e)).toList();
   }
 
-  Map<String,dynamic> toJson()=>{
-    "department_name":departmentName,
-    "levels": levels.map((e) => e.toJson()).toList()
-  };
-
+  Map<String, dynamic> toJson() => {
+        "department_name": departmentName,
+        "levels": levels.map((e) => e.toJson()).toList()
+      };
 }
 
 class Level {
@@ -46,11 +43,10 @@ class Level {
         .toList();
   }
 
-  Map<String,dynamic> toJson()=>{
-    "level_name":levelName,
-    "courses": courses.map((e) => e.toJson()).toList()
-  };
-
+  Map<String, dynamic> toJson() => {
+        "level_name": levelName,
+        "courses": courses.map((e) => e.toJson()).toList()
+      };
 }
 
 class Courses {
@@ -58,8 +54,10 @@ class Courses {
   late String courseTitle;
   late String materialFolder;
 
-
-  Courses({required this.courseCode,required this.courseTitle,required this.materialFolder});
+  Courses(
+      {required this.courseCode,
+      required this.courseTitle,
+      required this.materialFolder});
 
   Courses.fromJson(Map<String, dynamic> json) {
     courseCode = json["course_code"];
@@ -67,10 +65,23 @@ class Courses {
     materialFolder = json["material_folder"];
   }
 
-  Map<String,dynamic> toJson()=>{
-   "course_code":courseCode,
-   "course_title":courseTitle,
-   "material_folder": materialFolder
-  };
+  Map<String, dynamic> toJson() => {
+        "course_code": courseCode,
+        "course_title": courseTitle,
+        "material_folder": materialFolder
+      };
 
+  @override
+  bool operator ==(Object other) =>
+      other is Courses &&
+      other.courseCode == courseCode &&
+      other.courseTitle == courseTitle &&
+      other.materialFolder == materialFolder;
+
+  @override
+  int get hashCode => Object.hash(
+        courseCode,
+        courseTitle,
+        materialFolder,
+      );
 }

@@ -1,14 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/screens/course_material_listing.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 
 import '../widget/course_widget.dart';
 
-class CoursesPage extends StatelessWidget {
+class CoursesPage extends StatefulWidget {
   final Level currentLevel;
   const CoursesPage({super.key, required this.currentLevel});
+
+  @override
+  State<CoursesPage> createState() => _CoursesPageState();
+}
+
+class _CoursesPageState extends State<CoursesPage> {
+  late AppProvider provider;
+  final FocusNode _focus = FocusNode();
+  late final TextEditingController searchController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    searchController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    provider = Provider.of<AppProvider>(context);
+    searchController.addListener(() {
+      if (searchController.text.isEmpty ||
+          searchController.text == '' ||
+          searchController.text == ' ') {
+        provider.clearMaterialSearch();
+        return;
+      }
+      provider.searchCourses(
+        lvl: int.parse(widget.currentLevel.levelName.split('')[0]) - 1,
+        value: searchController.text,
+      );
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
+  dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +83,7 @@ class CoursesPage extends StatelessWidget {
                       Align(
                           alignment: AlignmentDirectional.bottomCenter,
                           child: Text(
-                            currentLevel.levelName,
+                            widget.currentLevel.levelName,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -71,10 +113,28 @@ class CoursesPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Consumer<ThemeProvider>(
               builder: (context, themeCtrl, _) => TextFormField(
+                focusNode: _focus,
+                controller: searchController,
                 decoration: InputDecoration(
+                    suffixIcon: AnimatedCrossFade(
+                      firstChild: const SizedBox(),
+                      secondChild: IconButton(
+                        onPressed: () {
+                          _focus.unfocus();
+                          searchController.clear();
+                          provider.clearCoursesSearch();
+                        },
+                        icon: const Icon(Icons.cancel),
+                      ),
+                      crossFadeState: _focus.hasPrimaryFocus
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(milliseconds: 500),
+                    ),
                     prefixIcon: Icon(
                       Icons.search_rounded,
-                      color: themeCtrl.isDarkMode ? null : const Color(0xAAFFFFFF),
+                      color:
+                          themeCtrl.isDarkMode ? null : const Color(0xAAFFFFFF),
                     ),
                     hintText: "Search Course",
                     hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -122,31 +182,88 @@ class CoursesPage extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: List.generate(
-                  currentLevel.courses.length,
-                  (index) => GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => CourseMaterialListing(
-                            course: currentLevel.courses[index],
-                            levelName: currentLevel.levelName,
+              child: provider.courseSearchResult.isEmpty
+                  ? provider.coursesSearched
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LottieBuilder.asset('assets/empty1.json'),
+                            const Center(
+                              child: Text('No Results'),
+                            ),
+                          ],
+                        )
+                      : widget.currentLevel.courses.isEmpty
+                          ? SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  LottieBuilder.asset('assets/no_notes.json'),
+                                  const Center(
+                                    child: Text('No Courses'),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              child: Column(
+                                children: List.generate(
+                                  widget.currentLevel.courses.length,
+                                  (index) => GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => CourseMaterialListing(
+                                            course: widget
+                                                .currentLevel.courses[index],
+                                            levelName:
+                                                widget.currentLevel.levelName,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: CourseWidget(
+                                      size: size,
+                                      courseCode: widget.currentLevel
+                                          .courses[index].courseCode,
+                                      courseTitle: widget.currentLevel
+                                          .courses[index].courseTitle,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                  : SingleChildScrollView(
+                      child: Column(
+                        children: List.generate(
+                          provider.courseSearchResult.length,
+                          (index) => GestureDetector(
+                            onTap: () {
+                              if (provider.courseSearchResult[index] == null) {
+                                return;
+                              }
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => CourseMaterialListing(
+                                    course: provider.courseSearchResult[index]!,
+                                    levelName: widget.currentLevel.levelName,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: CourseWidget(
+                              size: size,
+                              courseCode: provider
+                                      .courseSearchResult[index]?.courseCode ??
+                                  'Error',
+                              courseTitle: provider
+                                      .courseSearchResult[index]?.courseTitle ??
+                                  'Error',
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: CourseWidget(
-                      size: size,
-                      courseCode: currentLevel.courses[index].courseCode,
-                      courseTitle: currentLevel.courses[index].courseTitle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+                      ),
+                    )),
         ],
       ),
     );

@@ -8,7 +8,6 @@ import 'package:smooth_study/model/material_model.dart';
 import 'package:smooth_study/screens/audio_page.dart';
 import 'package:smooth_study/screens/dashboard/resuables/level_holder.dart';
 import 'package:smooth_study/screens/pdf_view_page.dart';
-import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/recent_widget.dart';
@@ -220,358 +219,132 @@ class _DashboardState extends State<Dashboard>
                                       height: 16,
                                     ),
                                     Consumer<ThemeProvider>(
-                                        builder: (context, controller, _) {
-                                      return Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (_) => CoursesPage(
-                                                              currentLevel: provider
-                                                                  .model!
-                                                                  .departments[
-                                                                      0]
-                                                                  .levels[0]),
-                                                        ));
-                                                      },
-                                                      child: LevelHolder(
-                                                        shape:
-                                                            HolderShape.normal,
-                                                        backgroundImage:
-                                                            'assets/100.png',
-                                                        text: provider
-                                                            .model!
-                                                            .departments[0]
-                                                            .levels[0]
-                                                            .levelName,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (_) => CoursesPage(
-                                                              currentLevel: provider
-                                                                  .model!
-                                                                  .departments[
-                                                                      0]
-                                                                  .levels[1]),
-                                                        ));
-                                                      },
-                                                      child: LevelHolder(
-                                                        shape:
-                                                            HolderShape.normal,
-                                                        backgroundImage:
-                                                            'assets/200.png',
-                                                        text: provider
-                                                            .model!
-                                                            .departments[0]
-                                                            .levels[1]
-                                                            .levelName,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.of(context)
-                                                        .push(MaterialPageRoute(
-                                                      builder: (_) => CoursesPage(
-                                                          currentLevel: provider
+                                      builder: (context, controller, _) {
+                                        return Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    children: [
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (_) => CoursesPage(
+                                                                currentLevel: provider
+                                                                    .model!
+                                                                    .departments[
+                                                                        0]
+                                                                    .levels[0]),
+                                                          ));
+                                                        },
+                                                        child: LevelHolder(
+                                                          shape: HolderShape
+                                                              .normal,
+                                                          backgroundImage:
+                                                              'assets/100.png',
+                                                          text: provider
                                                               .model!
                                                               .departments[0]
-                                                              .levels[2]),
-                                                    ));
-                                                  },
-                                                  child: LevelHolder(
-                                                    shape:
-                                                        HolderShape.spanHeight,
-                                                    backgroundImage:
-                                                        'assets/300.png',
-                                                    text: provider
-                                                        .model!
-                                                        .departments[0]
-                                                        .levels[2]
-                                                        .levelName,
+                                                              .levels[0]
+                                                              .levelName,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .push(
+                                                                  MaterialPageRoute(
+                                                            builder: (_) => CoursesPage(
+                                                                currentLevel: provider
+                                                                    .model!
+                                                                    .departments[
+                                                                        0]
+                                                                    .levels[1]),
+                                                          ));
+                                                        },
+                                                        child: LevelHolder(
+                                                          shape: HolderShape
+                                                              .normal,
+                                                          backgroundImage:
+                                                              'assets/200.png',
+                                                          text: provider
+                                                              .model!
+                                                              .departments[0]
+                                                              .levels[1]
+                                                              .levelName,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                builder: (_) => CoursesPage(
-                                                    currentLevel: provider
-                                                        .model!
-                                                        .departments[0]
-                                                        .levels[3]),
-                                              ));
-                                            },
-                                            child: LevelHolder(
-                                              shape: HolderShape.spanWidth,
-                                              backgroundImage: 'assets/400.png',
-                                              text: provider
-                                                  .model!
-                                                  .departments[0]
-                                                  .levels[3]
-                                                  .levelName,
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                              MaterialPageRoute(
+                                                        builder: (_) => CoursesPage(
+                                                            currentLevel:
+                                                                provider
+                                                                    .model!
+                                                                    .departments[
+                                                                        0]
+                                                                    .levels[2]),
+                                                      ));
+                                                    },
+                                                    child: LevelHolder(
+                                                      shape: HolderShape
+                                                          .spanHeight,
+                                                      backgroundImage:
+                                                          'assets/300.png',
+                                                      text: provider
+                                                          .model!
+                                                          .departments[0]
+                                                          .levels[2]
+                                                          .levelName,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          )
-                                        ],
-                                      );
-                                      // return Expanded(
-                                      //   child:
-                                      //   GridView.custom(
-                                      //     physics: const NeverScrollableScrollPhysics(),
-                                      //   gridDelegate: SliverQuiltedGridDelegate(
-                                      //     crossAxisCount: 4,
-                                      //     mainAxisSpacing: 8,
-                                      //     crossAxisSpacing: 4,
-                                      //     pattern: const [
-                                      //       QuiltedGridTile(1, 2),
-                                      //       QuiltedGridTile(2, 2),
-                                      //       QuiltedGridTile(1, 2),
-                                      //       QuiltedGridTile(1, 4),
-
-                                      //     ],
-                                      //   ),
-                                      //   childrenDelegate: SliverChildBuilderDelegate(
-                                      //     childCount: 4,
-                                      //     (context, index) =>   GestureDetector(
-                                      //           //   onTap: () {
-                                      //           //               Navigator.of(context).push(
-                                      //           //                 MaterialPageRoute(
-                                      //           //                   builder: (_) => const CoursesPage(
-                                      //           //                       currentLevel:
-                                      //           //                           ),
-                                      //           // ), ),},
-                                      //           child: Container(
-                                      //             alignment: Alignment.center,
-                                      //             decoration: BoxDecoration(
-                                      //               borderRadius:
-                                      //                   BorderRadius.circular(16),
-                                      //               image: DecorationImage(
-                                      //                 colorFilter: controller
-                                      //                         .isDarkMode
-                                      //                     ? const ColorFilter.mode(
-                                      //                   Color.fromARGB(96, 0, 0, 0),
-                                      //                   BlendMode.srcOver,
-                                      //                 )
-                                      //                     : const ColorFilter.mode(
-                                      //                         Color(0xA0000000),
-                                      //                         BlendMode.srcOver,
-                                      //                       ),
-                                      //                 fit: BoxFit.fill,
-                                      //                 image: const AssetImage(
-                                      //                     'assets/100.jpg'),
-                                      //               ),
-                                      //               color: const Color.fromARGB(
-                                      //                   255, 172, 119, 119),
-                                      //             ),
-                                      //             child: Text(
-                                      //               '100 lvl $index',
-                                      //               style: Theme.of(context)
-                                      //                   .textTheme
-                                      //                   .bodyMedium
-                                      //                   ?.copyWith(
-                                      //                       color: Colors.white),
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //   ),
-                                      //                                 ),
-                                      // );
-
-                                      // return Wrap(
-                                      //   spacing: 16,
-                                      //   runSpacing: 16,
-                                      //   children: [
-                                      //     Column(
-                                      //       children: [
-                                      // GestureDetector(
-                                      //   //   onTap: () {
-                                      //   //               Navigator.of(context).push(
-                                      //   //                 MaterialPageRoute(
-                                      //   //                   builder: (_) => const CoursesPage(
-                                      //   //                       currentLevel:
-                                      //   //                           ),
-                                      //   // ), ),},
-                                      //   child: Container(
-                                      //     width: size.width * 0.44,
-                                      //     height: size.height * 0.15,
-                                      //     alignment: Alignment.center,
-                                      //     decoration: BoxDecoration(
-                                      //       borderRadius:
-                                      //           BorderRadius.circular(16),
-                                      //       image: DecorationImage(
-                                      //         colorFilter: controller
-                                      //                 .isDarkMode
-                                      //             ? const ColorFilter.mode(
-                                      //           Color.fromARGB(96, 0, 0, 0),
-                                      //           BlendMode.srcOver,
-                                      //         )
-                                      //             : const ColorFilter.mode(
-                                      //                 Color(0xA0000000),
-                                      //                 BlendMode.srcOver,
-                                      //               ),
-                                      //         fit: BoxFit.fill,
-                                      //         image: const AssetImage(
-                                      //             'assets/100.jpg'),
-                                      //       ),
-                                      //       color: const Color.fromARGB(
-                                      //           255, 172, 119, 119),
-                                      //     ),
-                                      //     child: Text(
-                                      //       '100 lvl',
-                                      //       style: Theme.of(context)
-                                      //           .textTheme
-                                      //           .bodyMedium
-                                      //           ?.copyWith(
-                                      //               color: Colors.white),
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      //         const SizedBox(height: 16),
-                                      //         GestureDetector(
-                                      //           onTap: () {
-                                      //             print(provider.model!.departments
-                                      //                 .first.levels);
-                                      //             Navigator.of(context).push(
-                                      //               MaterialPageRoute(
-                                      //                 builder: (_) => CoursesPage(
-                                      //                   currentLevel: provider
-                                      //                       .model!
-                                      //                       .departments
-                                      //                       .first
-                                      //                       .levels[0],
-                                      //                 ),
-                                      //               ),
-                                      //             );
-                                      //           },
-                                      //           child: Container(
-                                      //             width: size.width * 0.44,
-                                      //             height: size.height * 0.196,
-                                      //             alignment: Alignment.center,
-                                      //             decoration: BoxDecoration(
-                                      //                 borderRadius:
-                                      //                     BorderRadius.circular(16),
-                                      //                 image: DecorationImage(
-                                      //                   colorFilter: controller
-                                      //                           .isDarkMode
-                                      //                       ? const ColorFilter.mode(
-                                      //                   Color.fromARGB(96, 0, 0, 0),
-                                      //                   BlendMode.srcOver,
-                                      //                 )
-                                      //                       : const ColorFilter
-                                      //                           .mode(
-                                      //                           Color(0xA0000000),
-                                      //                           BlendMode.srcOver,
-                                      //                         ),
-                                      //                   fit: BoxFit.fill,
-                                      //                   image: const AssetImage(
-                                      //                       'assets/200.jpg'),
-                                      //                 ),
-                                      //                 color: const Color.fromARGB(
-                                      //                     255, 0, 0, 0)),
-                                      //             child: Text(
-                                      //               '200 lvl',
-                                      //               style: Theme.of(context)
-                                      //                   .textTheme
-                                      //                   .bodyMedium
-                                      //                   ?.copyWith(
-                                      //                       color: Colors.white),
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     Container(
-                                      //       width: size.width * 0.44,
-                                      //       height: size.height * 0.36,
-                                      //       alignment: Alignment.center,
-                                      //       decoration: BoxDecoration(
-                                      //           borderRadius:
-                                      //               BorderRadius.circular(16),
-                                      //           image: DecorationImage(
-                                      //             colorFilter: controller.isDarkMode
-                                      //                 ? const ColorFilter.mode(
-                                      //                   Color.fromARGB(96, 0, 0, 0),
-                                      //                   BlendMode.srcOver,
-                                      //                 )
-                                      //                 : const ColorFilter.mode(
-                                      //                     Color(0xA0000000),
-                                      //                     BlendMode.srcOver,
-                                      //                   ),
-                                      //             fit: BoxFit.fill,
-                                      //             image: const AssetImage(
-                                      //                 'assets/300.jpg'),
-                                      //           ),
-                                      //           color: const Color.fromARGB(
-                                      //               255, 0, 0, 0)),
-                                      //       child: Text(
-                                      //         '300 lvl',
-                                      //         style: Theme.of(context)
-                                      //             .textTheme
-                                      //             .bodyMedium
-                                      //             ?.copyWith(color: Colors.white),
-                                      //       ),
-                                      //     ),
-                                      //     Container(
-                                      //       width: double.maxFinite,
-                                      //       height: size.height * 0.18,
-                                      //       alignment: Alignment.center,
-                                      //       decoration: BoxDecoration(
-                                      //         borderRadius:
-                                      //             BorderRadius.circular(16),
-                                      //         image: DecorationImage(
-                                      //           colorFilter: controller.isDarkMode
-                                      //               ? const ColorFilter.mode(
-                                      //                   Color.fromARGB(96, 0, 0, 0),
-                                      //                   BlendMode.srcOver,
-                                      //                 )
-                                      //               : const ColorFilter.mode(
-                                      //                   Color(0xA0000000),
-                                      //                   BlendMode.srcOver,
-                                      //                 ),
-                                      //           fit: BoxFit.fill,
-                                      //           image: const AssetImage(
-                                      //               'assets/400.png'),
-                                      //         ),
-                                      //         color: const Color.fromARGB(
-                                      //             255, 0, 0, 0),
-                                      //       ),
-                                      //       child: Text(
-                                      //         '400 lvl',
-                                      //         style: Theme.of(context)
-                                      //             .textTheme
-                                      //             .bodyMedium
-                                      //             ?.copyWith(color: Colors.white),
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // );
-                                    }),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (_) => CoursesPage(
+                                                      currentLevel: provider
+                                                          .model!
+                                                          .departments[0]
+                                                          .levels[3]),
+                                                ));
+                                              },
+                                              child: LevelHolder(
+                                                shape: HolderShape.spanWidth,
+                                                backgroundImage:
+                                                    'assets/400.png',
+                                                text: provider
+                                                    .model!
+                                                    .departments[0]
+                                                    .levels[3]
+                                                    .levelName,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    ),
                                     const SizedBox(height: 20),
                                     Row(
                                       mainAxisAlignment:
@@ -606,7 +379,7 @@ class _DashboardState extends State<Dashboard>
                                       ],
                                     ),
                                     RecentViewedBox.recentlyViewed.isEmpty
-                                        ? const Text('No Recent Docs')
+                                        ? const Align(alignment: Alignment.center, child:  Padding(padding: EdgeInsets.all(16),child: Text('No Recent Docs')))
                                         : SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
@@ -628,26 +401,36 @@ class _DashboardState extends State<Dashboard>
                                                             .last
                                                             .contains('mp')) {
                                                           Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          AudioPage(
-                                                                            material:
-                                                                                RecentViewedBox.recentlyViewed[index],
-                                                                          )));
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      AudioPage(
+                                                                material:
+                                                                    RecentViewedBox
+                                                                            .recentlyViewed[
+                                                                        index],
+                                                              ),
+                                                            ),
+                                                          );
                                                           return;
                                                         }
 
-                                                        var resentlyView = await Navigator
-                                                                .of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            PdfViewPage(
-                                                                              materialModel: RecentViewedBox.recentlyViewed[index],
-                                                                            )));
+                                                        var resentlyView =
+                                                            await Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    PdfViewPage(
+                                                              materialModel:
+                                                                  RecentViewedBox
+                                                                          .recentlyViewed[
+                                                                      index],
+                                                            ),
+                                                          ),
+                                                        );
 
                                                         if (resentlyView !=
                                                             null) {

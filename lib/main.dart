@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/firebase_options.dart';
 import 'package:smooth_study/screens/dashboard/dashboard.dart';
+import 'package:smooth_study/utils/personal_notes_box.dart';
 import 'package:smooth_study/utils/storage_manager.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/utils/material_box.dart';
@@ -21,6 +22,7 @@ void main() async {
   await MaterialBox.initialize();
   await RecentViewedBox.initialize();
   await StorageManager.initialize();
+  await PersonalNotesBox.initialize();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(systemNavigationBarColor: Colors.transparent,statusBarColor: Colors.transparent));
