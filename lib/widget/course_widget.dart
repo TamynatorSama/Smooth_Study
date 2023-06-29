@@ -15,13 +15,13 @@ class CourseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: (size.height * 0.08).clamp(65, 75),
+      height: (size.height * 0.087).clamp(65, 80),
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,
-        bottom: 16,
+        bottom: 14,
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal:16,vertical: 14),
       width: double.maxFinite,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -55,7 +55,7 @@ class CourseWidget extends StatelessWidget {
                 courseCode,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-           const   SizedBox(height: 4,),
+          //  const   SizedBox(height: 2,),
               Text(
                 courseTitle,
                 style: Theme.of(context)

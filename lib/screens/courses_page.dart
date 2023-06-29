@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
@@ -187,10 +188,9 @@ class _CoursesPageState extends State<CoursesPage> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            LottieBuilder.asset('assets/empty1.json'),
-                            const Center(
-                              child: Text('No Results'),
-                            ),
+                            SvgPicture.asset('assets/empty.svg'),
+                                            const SizedBox(height: 15),
+                                            Text('No Results',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500,color: Colors.grey),),
                           ],
                         )
                       : widget.currentLevel.courses.isEmpty

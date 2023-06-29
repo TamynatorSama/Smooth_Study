@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_study/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
@@ -8,6 +9,7 @@ import 'package:smooth_study/model/material_model.dart';
 import 'package:smooth_study/screens/audio_page.dart';
 import 'package:smooth_study/screens/dashboard/resuables/level_holder.dart';
 import 'package:smooth_study/screens/pdf_view_page.dart';
+import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/recent_widget.dart';
@@ -383,11 +385,18 @@ class _DashboardState extends State<Dashboard>
                                       ],
                                     ),
                                     RecentViewedBox.recentlyViewed.isEmpty
-                                        ? const Align(
+                                        ? Align(
                                             alignment: Alignment.center,
                                             child: Padding(
-                                                padding: EdgeInsets.all(16),
-                                                child: Text('No Recent Docs')))
+                                                padding: const EdgeInsets.all(16),
+                                                child: Column(
+                                          children: [
+                                            const SizedBox(height: 20),
+                                            SvgPicture.asset('assets/empty.svg'),
+                                            const SizedBox(height: 15),
+                                            Text('No Recent Docs',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500,color: Colors.grey),),
+                                          ],
+                                        )))
                                         : SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
@@ -495,6 +504,17 @@ class _DashboardState extends State<Dashboard>
 }
 
 void updateMaterial(MaterialModel model) {
+  //  var materialCacheList = MaterialBox.materialBox.values;
+  //  print(MaterialBox.materialBox.keys);
+  // //  var parsed = materialCacheList.map((e){
+  // //   print(e);
+  // //   return e;
+  // //  });
+  //  for(var hel in materialCacheList){
+  //   print(hel);
+  //  }
+  //  print(materialCacheList);
+
   // List<MaterialModel>? materials=MaterialBox.getMaterial(model.) ;
   // MaterialBox.materialBox.put(widget.course.materialFolder,
   //     materials.map((e) => jsonEncode(e.toJson())).toList());
