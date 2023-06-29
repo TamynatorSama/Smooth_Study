@@ -23,14 +23,9 @@ class _CoursesPageState extends State<CoursesPage> {
 
   @override
   void initState() {
-    super.initState();
-
     searchController = TextEditingController();
-  }
 
-  @override
-  void didChangeDependencies() {
-    provider = Provider.of<AppProvider>(context);
+    provider = Provider.of<AppProvider>(context, listen: false);
     searchController.addListener(() {
       if (searchController.text.isEmpty ||
           searchController.text == '' ||
@@ -43,7 +38,8 @@ class _CoursesPageState extends State<CoursesPage> {
         value: searchController.text,
       );
     });
-    super.didChangeDependencies();
+
+    super.initState();
   }
 
   @override
@@ -55,6 +51,10 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final appProvider = Provider.of<AppProvider>(
+      context,
+      listen: true,
+    );
 
     return Scaffold(
       body: Column(
@@ -182,8 +182,8 @@ class _CoursesPageState extends State<CoursesPage> {
           ),
           const SizedBox(height: 18),
           Expanded(
-              child: provider.courseSearchResult.isEmpty
-                  ? provider.coursesSearched
+              child: appProvider.courseSearchResult.isEmpty
+                  ? appProvider.coursesSearched
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -236,16 +236,18 @@ class _CoursesPageState extends State<CoursesPage> {
                   : SingleChildScrollView(
                       child: Column(
                         children: List.generate(
-                          provider.courseSearchResult.length,
+                          appProvider.courseSearchResult.length,
                           (index) => GestureDetector(
                             onTap: () {
-                              if (provider.courseSearchResult[index] == null) {
+                              if (appProvider.courseSearchResult[index] ==
+                                  null) {
                                 return;
                               }
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => CourseMaterialListing(
-                                    course: provider.courseSearchResult[index]!,
+                                    course:
+                                        appProvider.courseSearchResult[index]!,
                                     levelName: widget.currentLevel.levelName,
                                   ),
                                 ),

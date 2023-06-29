@@ -24,17 +24,12 @@ class AllNotesViewPage extends StatefulWidget {
 class _AllNotesViewPageState extends State<AllNotesViewPage> {
   late TextEditingController searchController;
   late AppProvider _appProvider;
-  final FocusNode _focusNode = FocusNode();
+  late final FocusNode _focusNode;
 
   @override
   initState() {
-    super.initState();
     searchController = TextEditingController();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    _focusNode = FocusNode();
     _appProvider = Provider.of<AppProvider>(
       context,
       listen: false,
@@ -47,10 +42,12 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
       }
       _appProvider.searchNotes(searchController.text);
     });
+    super.initState();
   }
 
   @override
   void dispose() {
+    _focusNode.dispose();
     searchController.dispose();
     super.dispose();
   }
@@ -67,7 +64,6 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => SingleNoteViewPage(
-                materialName: widget.materialName,
                 note: NoteModel.newNote(
                   materialName: widget.materialName,
                   uid: const Uuid().v4(),
@@ -214,80 +210,83 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SingleChildScrollView(
-                child: Column(
-                  children: _appProvider.noteSearchResult.isEmpty
-                      ? _appProvider.notesSearched
-                          ? [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  LottieBuilder.asset('assets/empty1.json'),
-                                  const Center(
-                                    child: Text('No Results'),
-                                  ),
-                                ],
-                              ),
-                            ] // Search is Empty
-                          : notes.isEmpty
-                              ? [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      LottieBuilder.asset(
-                                          'assets/no_notes.json'),
-                                      const Center(
-                                        child: Text('No Notes ...yet'),
+                child:
+                    Consumer<AppProvider>(builder: (context, appProvider, _) {
+                  return Column(
+                    children: appProvider.noteSearchResult.isEmpty
+                        ? _appProvider.notesSearched
+                            ? [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LottieBuilder.asset('assets/empty1.json'),
+                                    const Center(
+                                      child: Text('No Results'),
+                                    ),
+                                  ],
+                                ),
+                              ] // Search is Empty
+                            : notes.isEmpty
+                                ? [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        LottieBuilder.asset(
+                                            'assets/98121-empty-state.json'),
+                                        const Center(
+                                          child: Text('No Notes ...yet'),
+                                        ),
+                                      ],
+                                    ),
+                                  ]
+                                : List.generate(
+                                    notes.length,
+                                    (index) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => SingleNoteViewPage(
+                                              note: notes[index],
+                                              courseCode: widget.courseCode,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: NoteWidget(
+                                        size: size,
+                                        note: notes[index],
+                                        courseCode: widget.courseCode,
                                       ),
-                                    ],
-                                  ),
-                                ]
-                              : List.generate(
-                                  notes.length,
-                                  (index) => GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
+                                    ),
+                                  )
+                        : List.generate(
+                            _appProvider.noteSearchResult.length,
+                            (index) => GestureDetector(
+                              onTap: _appProvider.noteSearchResult[index] !=
+                                      null
+                                  ? () {
+                                      Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (_) => SingleNoteViewPage(
-                                            materialName: widget.materialName,
-                                            note: notes[index],
+                                            note: _appProvider
+                                                .noteSearchResult[index]!,
                                             courseCode: widget.courseCode,
                                           ),
                                         ),
+                                        (route) => false,
                                       );
-                                    },
-                                    child: NoteWidget(
-                                      size: size,
-                                      note: notes[index],
-                                      courseCode: widget.courseCode,
-                                    ),
-                                  ),
-                                )
-                      : List.generate(
-                          _appProvider.noteSearchResult.length,
-                          (index) => GestureDetector(
-                            onTap: _appProvider.noteSearchResult[index] != null
-                                ? () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                        builder: (_) => SingleNoteViewPage(
-                                          materialName: widget.materialName,
-                                          note: _appProvider
-                                              .noteSearchResult[index]!,
-                                          courseCode: widget.courseCode,
-                                        ),
-                                      ),
-                                      (route) => false,
-                                    );
-                                  }
-                                : null,
-                            child: NoteWidget(
-                              size: size,
-                              courseCode: widget.courseCode,
-                              note: _appProvider.noteSearchResult[index]!,
+                                    }
+                                  : null,
+                              child: NoteWidget(
+                                size: size,
+                                courseCode: widget.courseCode,
+                                note: _appProvider.noteSearchResult[index]!,
+                              ),
                             ),
                           ),
-                        ),
-                ),
+                  );
+                }),
               ),
             ),
           ),

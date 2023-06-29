@@ -5,6 +5,7 @@ class MaterialModel {
   late int? totalPages;
   late int initialPage;
   late bool hasBeenModified;
+  late String courseCode;
 
   MaterialModel({
     required this.fileName,
@@ -13,6 +14,7 @@ class MaterialModel {
     this.initialPage = 0,
     this.totalPages,
     this.hasBeenModified = false,
+    required this.courseCode,
   });
 
   MaterialModel.toJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class MaterialModel {
     totalPages = json["total_pages"];
     initialPage = json["initial_page"];
     hasBeenModified = json["has_been_modified"] ?? false;
+    courseCode = json["course_code"];
   }
 
   Map<String, dynamic> toJson() => {
@@ -30,7 +33,8 @@ class MaterialModel {
         "isLocal": isLocal,
         "total_pages": totalPages,
         "initial_page": initialPage,
-        "has_been_modified": hasBeenModified
+        "has_been_modified": hasBeenModified,
+        "course_code": courseCode,
       };
 
   @override
@@ -41,7 +45,8 @@ class MaterialModel {
         other.isLocal == isLocal &&
         other.initialPage == initialPage &&
         other.totalPages == totalPages &&
-        other.hasBeenModified == hasBeenModified) {
+        other.hasBeenModified == hasBeenModified &&
+        other.courseCode == courseCode) {
       return true;
     }
     return false;
@@ -49,5 +54,12 @@ class MaterialModel {
 
   @override
   int get hashCode => Object.hash(
-      fileName, filePath, isLocal, totalPages, initialPage, hasBeenModified);
+        fileName,
+        filePath,
+        isLocal,
+        totalPages,
+        initialPage,
+        hasBeenModified,
+        courseCode,
+      );
 }

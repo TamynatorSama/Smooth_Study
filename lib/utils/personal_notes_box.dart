@@ -81,11 +81,10 @@ class PersonalNotesBox {
   }
 
   List<NoteModel>? deleteNote({
-    required String materialName,
     required NoteModel note,
   }) {
     try {
-      var prevNotes = getNotes(materialName);
+      var prevNotes = getNotes(note.materialName);
 
       final existingNote = prevNotes.where(
         (element) => element.uid == note.uid,
@@ -94,7 +93,7 @@ class PersonalNotesBox {
       prevNotes.remove(existingNote.first);
 
       notesBox.put(
-        materialName,
+        note.materialName,
         jsonEncode(prevNotes),
       );
 

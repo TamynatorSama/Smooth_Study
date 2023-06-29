@@ -36,17 +36,12 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
 
   @override
   void initState() {
-    super.initState();
-
     searchController = TextEditingController();
+
+    provider = Provider.of<AppProvider>(context, listen: false);
     setState(() {
       materials = MaterialBox.getMaterial(widget.course.materialFolder) ?? [];
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    provider = Provider.of<AppProvider>(context, listen: false);
     getMaterials();
     searchController.addListener(() {
       if (searchController.text.isEmpty) {
@@ -59,7 +54,8 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
         value: searchController.text,
       );
     });
-    super.didChangeDependencies();
+
+    super.initState();
   }
 
   @override
@@ -492,25 +488,26 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                     ),
                                   ),
                                   trailing: IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => AllNotesViewPage(
-                                            materialName: appProvider
-                                                    .materialSearchResult[index]
-                                                    ?.fileName ??
-                                                'Error',
-                                            courseCode:
-                                                widget.course.courseCode,
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => AllNotesViewPage(
+                                              materialName: appProvider
+                                                      .materialSearchResult[
+                                                          index]
+                                                      ?.fileName ??
+                                                  'Error',
+                                              courseCode:
+                                                  widget.course.courseCode,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    icon: const Icon(Icons.note_add)
-                                    //  SvgPicture.asset(
-                                    //   'assets/svg/notes.svg',
-                                    // ),
-                                  ),
+                                        );
+                                      },
+                                      icon: const Icon(Icons.note_add)
+                                      //  SvgPicture.asset(
+                                      //   'assets/svg/notes.svg',
+                                      // ),
+                                      ),
                                 ),
                                 const Divider(
                                   height: 5,

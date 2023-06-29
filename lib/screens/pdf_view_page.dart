@@ -45,11 +45,14 @@ class _PdfViewPageState extends State<PdfViewPage> {
   }
 
   downloadFile(String downloadLink) async {
-    String? path =  await downloadNotifier.downloadMaterial(storageIO: storageIO,downloadLink: widget.materialModel.filePath,fileName: widget.materialModel.fileName);
-    if( path !=null && path.isNotEmpty){
+    String? path = await downloadNotifier.downloadMaterial(
+        storageIO: storageIO,
+        downloadLink: widget.materialModel.filePath,
+        fileName: widget.materialModel.fileName);
+    if (path != null && path.isNotEmpty) {
       widget.materialModel.filePath = path;
       widget.materialModel.isLocal = true;
-    if (mounted) setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -83,60 +86,69 @@ class _PdfViewPageState extends State<PdfViewPage> {
               height: hideAppBar ? 0 : 80,
               duration: const Duration(milliseconds: 300),
               child: ListenableBuilder(
-                listenable: downloadNotifier,
-                builder: (context,child) {
-                  return AppBar(
-                    title: Text(
-                      widget.materialModel.fileName,
-                      style: primaryTextStyle.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                    backgroundColor: const Color.fromARGB(255, 49, 49, 49),
-                    leadingWidth: 40,
-                    leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context, widget.materialModel);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios_rounded,
-                          size: 18,
-                          color: Colors.white,
-                        )),
-                    actions: [
-                      downloadNotifier.downloads.containsKey(widget.materialModel.fileName) ? ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 20,maxHeight: 10),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical:18.0),
-                          child: CircularProgressIndicator(
-                            value: (downloadNotifier.downloads[widget.materialModel.fileName]["progress"]) / 100,
-                            strokeWidth: 3,
-                            color: Colors.white,
-                          ),
-                        )): IconButton(
+                  listenable: downloadNotifier,
+                  builder: (context, child) {
+                    return AppBar(
+                      title: Text(
+                        widget.materialModel.fileName,
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+                      leadingWidth: 40,
+                      leading: IconButton(
                           onPressed: () {
-                            // DownloadNotifier.downloads.any((element) => element.containsKey(widget.materialModel.fileName))''
-                            if (!widget.materialModel.isLocal) {
-                              downloadFile(widget.materialModel.filePath);
-                            }
+                            Navigator.pop(context, widget.materialModel);
                           },
-                          icon: Icon(
-                            widget.materialModel.isLocal? Icons.check_circle_rounded :Icons.cloud_download_rounded,
-                            size: 20,
-                            color: Colors.white,
-                          )),
-                      IconButton(
-                          onPressed: () {},
                           icon: const Icon(
-                            Icons.add,
-                            size: 20,
+                            Icons.arrow_back_ios_rounded,
+                            size: 18,
                             color: Colors.white,
                           )),
-                    ],
-                  );
-                }
-              ),
+                      actions: [
+                        downloadNotifier.downloads
+                                .containsKey(widget.materialModel.fileName)
+                            ? ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                    maxWidth: 20, maxHeight: 10),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 18.0),
+                                  child: CircularProgressIndicator(
+                                    value: (downloadNotifier.downloads[widget
+                                            .materialModel
+                                            .fileName]["progress"]) /
+                                        100,
+                                    strokeWidth: 3,
+                                    color: Colors.white,
+                                  ),
+                                ))
+                            : IconButton(
+                                onPressed: () {
+                                  // DownloadNotifier.downloads.any((element) => element.containsKey(widget.materialModel.fileName))''
+                                  if (!widget.materialModel.isLocal) {
+                                    downloadFile(widget.materialModel.filePath);
+                                  }
+                                },
+                                icon: Icon(
+                                  widget.materialModel.isLocal
+                                      ? Icons.check_circle_rounded
+                                      : Icons.cloud_download_rounded,
+                                  size: 20,
+                                  color: Colors.white,
+                                )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.add,
+                              size: 20,
+                              color: Colors.white,
+                            )),
+                      ],
+                    );
+                  }),
             ),
           ),
           body: widget.materialModel.isLocal

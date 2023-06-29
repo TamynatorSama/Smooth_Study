@@ -32,7 +32,6 @@ class AppProvider extends ChangeNotifier {
     required NoteModel note,
   }) {
     final newNotes = PersonalNotesBox().deleteNote(
-      materialName: materialName,
       note: note,
     );
 
@@ -80,6 +79,8 @@ class AppProvider extends ChangeNotifier {
       if (materials.items.isNotEmpty) {
         for (var material in materials.items) {
           coursesMaterial.add(MaterialModel(
+            // The parent folder is the course code anyways so
+              courseCode: material.parent?.name ?? 'TST',
               fileName: material.name,
               filePath: await material.getDownloadURL(),
               isLocal: false));

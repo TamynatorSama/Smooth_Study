@@ -122,7 +122,7 @@ class _DashboardState extends State<Dashboard>
                           ),
                         ),
                       )
-                    : provider.error
+                    : provider.error || provider.model == null
                         ? Expanded(
                             child: Center(
                                 child: Column(
@@ -206,15 +206,14 @@ class _DashboardState extends State<Dashboard>
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    Text(
-                                      'Levels',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
+                                    Text('Levels',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
                                               fontSize: 25,
-                                              fontWeight: FontWeight.w500),
-                                    ),
+                                              fontWeight: FontWeight.w500,
+                                            )),
                                     const SizedBox(
                                       height: 16,
                                     ),
@@ -229,16 +228,21 @@ class _DashboardState extends State<Dashboard>
                                                     children: [
                                                       GestureDetector(
                                                         onTap: () {
+                                                          if (provider.model ==
+                                                              null) return;
                                                           Navigator.of(context)
                                                               .push(
-                                                                  MaterialPageRoute(
-                                                            builder: (_) => CoursesPage(
+                                                            MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  CoursesPage(
                                                                 currentLevel: provider
                                                                     .model!
                                                                     .departments[
                                                                         0]
-                                                                    .levels[0]),
-                                                          ));
+                                                                    .levels[0],
+                                                              ),
+                                                            ),
+                                                          );
                                                         },
                                                         child: LevelHolder(
                                                           shape: HolderShape
@@ -354,8 +358,8 @@ class _DashboardState extends State<Dashboard>
                                           'Recent',
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodySmall!
-                                              .copyWith(
+                                              .bodySmall
+                                              ?.copyWith(
                                                   fontSize: 25,
                                                   fontWeight: FontWeight.w500),
                                         ),
@@ -379,7 +383,11 @@ class _DashboardState extends State<Dashboard>
                                       ],
                                     ),
                                     RecentViewedBox.recentlyViewed.isEmpty
-                                        ? const Align(alignment: Alignment.center, child:  Padding(padding: EdgeInsets.all(16),child: Text('No Recent Docs')))
+                                        ? const Align(
+                                            alignment: Alignment.center,
+                                            child: Padding(
+                                                padding: EdgeInsets.all(16),
+                                                child: Text('No Recent Docs')))
                                         : SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
@@ -443,7 +451,11 @@ class _DashboardState extends State<Dashboard>
                                                         }
                                                       },
                                                       child: RecentWidget(
-                                                        courseCode: 'CSC 101',
+                                                        courseCode:
+                                                            RecentViewedBox
+                                                                .recentlyViewed[
+                                                                    index]
+                                                                .courseCode,
                                                         title: RecentViewedBox
                                                             .recentlyViewed[
                                                                 index]

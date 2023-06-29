@@ -73,7 +73,6 @@ class NoteWidget extends StatelessWidget {
               PopupMenuItem(
                 onTap: () {
                   PersonalNotesBox().deleteNote(
-                    materialName: note.materialName,
                     note: note,
                   );
                 },
