@@ -7,17 +7,20 @@ class ThemeProvider with ChangeNotifier {
   final darkTheme = ThemeData(
     primaryColor: Colors.white,
     canvasColor: const Color(0xFF6259FF),
-    textTheme: TextTheme(
-      bodyMedium: GoogleFonts.josefinSans(
+    textTheme: const TextTheme(
+      bodyMedium: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontSize: 22,
         color: Colors.white,
       ),
-      bodyLarge: GoogleFonts.josefinSans(
+      bodyLarge: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontWeight: FontWeight.w500,
         fontSize: 24,
         color: Colors.white,
       ),
-      bodySmall: GoogleFonts.josefinSans(
+      bodySmall: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontSize: 18,
         color: Colors.white,
       ),
@@ -35,17 +38,20 @@ class ThemeProvider with ChangeNotifier {
   final lightTheme = ThemeData(
     primaryColor: Colors.black,
     canvasColor: const Color(0xFF6259FF),
-    textTheme: TextTheme(
-      bodyMedium: GoogleFonts.josefinSans(
+    textTheme: const TextTheme(
+      bodyMedium: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontSize: 22,
         color: Colors.black,
       ),
-      bodyLarge: GoogleFonts.josefinSans(
+      bodyLarge: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontWeight: FontWeight.w500,
         fontSize: 24,
         color: Colors.black,
       ),
-      bodySmall: GoogleFonts.josefinSans(
+      bodySmall: TextStyle(
+        fontFamily: "Coinbase-Sans",
         fontSize: 18,
         color: Colors.black,
       ),

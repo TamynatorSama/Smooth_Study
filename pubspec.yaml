@@ -28,7 +28,6 @@ dependencies:
   provider: ^6.0.5
   shared_preferences: ^2.1.2
   syncfusion_flutter_pdfviewer: ^20.4.54
-  pdf_thumbnail: ^0.1.5+1
   uuid: ^3.0.7
 
 dev_dependencies:
@@ -43,6 +42,13 @@ flutter:
     - assets/
     - assets/svg/
     - assets/lvl.png
+  fonts:
+    - family: Coinbase-Sans
+      fonts:
+        - asset: assets/fonts/Coinbase_Sans/500.ttf
+          weight: 500
+        - asset: assets/fonts/Coinbase_Sans/400.ttf
+          weight: 400
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen
