@@ -10,7 +10,7 @@ import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/department_model.dart';
 import 'package:smooth_study/model/material_model.dart';
 import 'package:smooth_study/screens/pdf_view_page.dart';
-import 'package:smooth_study/screens/all_notes_view_page.dart';
+import 'package:smooth_study/screens/notes/all_notes_view_page.dart';
 import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';

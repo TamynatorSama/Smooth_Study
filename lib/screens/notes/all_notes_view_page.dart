@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/notes_model.dart';
-import 'package:smooth_study/screens/single_note_view_page.dart';
+import 'package:smooth_study/screens/notes/single_note_view_page.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/music_notes_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -24,6 +24,7 @@ class AllNotesViewPage extends StatefulWidget {
 class _AllNotesViewPageState extends State<AllNotesViewPage> {
   late TextEditingController searchController;
   late AppProvider _appProvider;
+  // List<NoteModel> notes=[];
   late final FocusNode _focusNode;
 
   @override
@@ -35,6 +36,8 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
       listen: false,
     );
     _appProvider.getNotes(widget.materialName);
+    // notes = Provider.of<AppProvider>(context,listen: false).notes;
+    setState(() {});
     searchController.addListener(() {
       if (searchController.text.isEmpty) {
         _appProvider.clearNotesSearch();
@@ -43,6 +46,12 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
       _appProvider.searchNotes(searchController.text);
     });
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+  print("""object ASADSDASDAS""");
+    super.deactivate();
   }
 
   @override
@@ -55,13 +64,12 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final notes = Provider.of<AppProvider>(context).notes;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async{
           // PersonalNotesBox().clearNotes();
-          Navigator.of(context).push(
+          await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => SingleNoteViewPage(
                 note: NoteModel.newNote(
@@ -72,6 +80,7 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
               ),
             ),
           );
+          _appProvider.getNotes(widget.materialName);
         },
         child: const Icon(Icons.add),
       ),
@@ -226,7 +235,7 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                                   ],
                                 ),
                               ] // Search is Empty
-                            : notes.isEmpty
+                            : appProvider.notes.isEmpty
                                 ? [
                                     Column(
                                       mainAxisAlignment:
@@ -241,21 +250,25 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                                     ),
                                   ]
                                 : List.generate(
-                                    notes.length,
+                                    appProvider.notes.length,
                                     (index) => GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
+                                      onTap: () async{
+                                        await Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (_) => SingleNoteViewPage(
-                                              note: notes[index],
+                                              note: appProvider.notes[index],
                                               courseCode: widget.courseCode,
                                             ),
                                           ),
                                         );
+                                        _appProvider.getNotes(widget.materialName);
                                       },
                                       child: NoteWidget(
+                                        callback:(){
+                                          _appProvider.getNotes(widget.materialName);
+                                        },
                                         size: size,
-                                        note: notes[index],
+                                        note: appProvider.notes[index],
                                         courseCode: widget.courseCode,
                                       ),
                                     ),
@@ -265,8 +278,8 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                             (index) => GestureDetector(
                               onTap: _appProvider.noteSearchResult[index] !=
                                       null
-                                  ? () {
-                                      Navigator.of(context).pushAndRemoveUntil(
+                                  ? () async{
+                                      await Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (_) => SingleNoteViewPage(
                                             note: _appProvider
@@ -276,9 +289,13 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                                         ),
                                         (route) => false,
                                       );
+                                      _appProvider.getNotes(widget.materialName);
                                     }
                                   : null,
                               child: NoteWidget(
+                                callback: (){
+                                  _appProvider.getNotes(widget.materialName);
+                                },
                                 size: size,
                                 courseCode: widget.courseCode,
                                 note: _appProvider.noteSearchResult[index]!,

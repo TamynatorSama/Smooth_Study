@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_study/utils/storage_manager.dart';
 
 class ThemeProvider with ChangeNotifier {
@@ -15,7 +14,7 @@ class ThemeProvider with ChangeNotifier {
       ),
       bodyLarge: TextStyle(
         fontFamily: "Coinbase-Sans",
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
         fontSize: 24,
         color: Colors.white,
       ),

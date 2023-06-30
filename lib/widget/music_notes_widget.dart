@@ -5,12 +5,14 @@ import 'package:smooth_study/utils/personal_notes_box.dart';
 
 class NoteWidget extends StatelessWidget {
   final NoteModel note;
+  final Function() callback;
   final String courseCode;
   final Size size;
   const NoteWidget({
     super.key,
     required this.note,
     required this.size,
+    required this.callback,
     required this.courseCode,
   });
 
@@ -18,7 +20,7 @@ class NoteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // width: size.width * 0.7,
-      height: size.height * 0.08,
+      height: size.height * 0.09,
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         boxShadow: [
@@ -69,15 +71,22 @@ class NoteWidget extends StatelessWidget {
           ),
           const Spacer(),
           PopupMenuButton(
+            position: PopupMenuPosition.under,
+            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
             itemBuilder: (context) => [
               PopupMenuItem(
+                
                 onTap: () {
                   PersonalNotesBox().deleteNote(
                     note: note,
                   );
+                  callback();
                 },
                 child: Text(
                   'Delete Note',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall

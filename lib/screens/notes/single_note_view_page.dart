@@ -110,6 +110,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                       minLines: 1,
                       maxLines: 2,
                       controller: headController,
+                      style: Theme.of(context).textTheme.bodyLarge,
                       decoration: const InputDecoration(
                         hintText: 'Title',
                         border: InputBorder.none,
@@ -210,12 +211,14 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                 ],
               ),
             ),
-             Divider(
+            Divider(
               thickness: 6,
-              color: isDarkMode ?const Color.fromARGB(255, 110, 110, 110) :const Color.fromARGB(255, 215, 215, 215),
+              color: isDarkMode
+                  ? const Color.fromARGB(255, 110, 110, 110)
+                  : const Color.fromARGB(255, 215, 215, 215),
             ),
             const SizedBox(
-              height: 16,
+              height: 14,
             ),
             Expanded(
               child: Padding(
@@ -229,6 +232,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                   minLines: null,
                   maxLines: null,
                   controller: bodyController,
+                  style: Theme.of(context).textTheme.bodySmall,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     alignLabelWithHint: true,

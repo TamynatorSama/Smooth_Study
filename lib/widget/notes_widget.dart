@@ -15,13 +15,13 @@ class NotesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: (size.height * 0.08).clamp(65, 75),
+      height: (size.height * 0.085).clamp(65, 80),
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,
         bottom: 16,
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16,vertical:12),
       width: double.maxFinite,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -41,7 +41,7 @@ class NotesWidget extends StatelessWidget {
               Container(
             height: double.maxFinite,
             width: 6,
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.only(right: 16,top: 3,bottom: 3),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               color: Theme.of(context).primaryColor,
@@ -55,13 +55,18 @@ class NotesWidget extends StatelessWidget {
                 head,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-           const   SizedBox(height: 4,),
-              Text(
-                body,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 12),
+          //  const   SizedBox(height: 4,),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: size.width * 0.6),
+                child: Text(
+                  body,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontSize: 12),
+                ),
               ),
             ],
           ),

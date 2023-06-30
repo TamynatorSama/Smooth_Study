@@ -4,10 +4,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:smooth_study/model/material_model.dart';
+import 'package:smooth_study/model/notes_model.dart';
+import 'package:smooth_study/screens/notes/single_note_view_page.dart';
 import 'package:smooth_study/utils/download_notifier.dart';
 import 'package:smooth_study/utils/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:internet_file/storage_io.dart';
+import 'package:uuid/uuid.dart';
 
 class PdfViewPage extends StatefulWidget {
   final MaterialModel materialModel;
@@ -140,7 +143,23 @@ class _PdfViewPageState extends State<PdfViewPage> {
                                   color: Colors.white,
                                 )),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => SingleNoteViewPage(
+                                          courseCode:
+                                              widget.materialModel.courseCode,
+                                          note: NoteModel(
+                                            head: '',
+                                            body: '',
+                                            materialName:
+                                                widget.materialModel.fileName,
+                                            uid: const Uuid().v4(),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                            },
                             icon: const Icon(
                               Icons.add,
                               size: 20,

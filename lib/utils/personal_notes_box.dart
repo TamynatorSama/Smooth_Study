@@ -61,6 +61,7 @@ class PersonalNotesBox {
     required NoteModel note,
   }) {
     var prevNotes = getNotes(materialName);
+    print(prevNotes);
     try {
       final existingNote = prevNotes.firstWhere(
         (element) => element.uid == note.uid,
