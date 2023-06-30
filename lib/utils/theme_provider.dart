@@ -36,7 +36,7 @@ class ThemeProvider with ChangeNotifier {
 
   final lightTheme = ThemeData(
     primaryColor: Colors.black,
-    canvasColor: const Color(0xFF6259FF),
+    canvasColor: const Color.fromARGB(255, 116, 110, 199),
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         fontFamily: "Coinbase-Sans",

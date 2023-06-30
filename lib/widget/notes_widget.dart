@@ -15,7 +15,7 @@ class NotesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: (size.height * 0.085).clamp(65, 80),
+      height: (size.height * 0.085).clamp(75, 85),
       margin: const EdgeInsets.only(
         left: 16,
         right: 16,

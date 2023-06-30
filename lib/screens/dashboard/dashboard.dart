@@ -10,6 +10,7 @@ import 'package:smooth_study/model/material_model.dart';
 import 'package:smooth_study/screens/audio_page.dart';
 import 'package:smooth_study/screens/dashboard/resuables/level_holder.dart';
 import 'package:smooth_study/screens/pdf_view_page.dart';
+import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/recently_viewed_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/recent_widget.dart';

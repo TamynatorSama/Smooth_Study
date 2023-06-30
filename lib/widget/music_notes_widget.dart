@@ -62,7 +62,7 @@ class NoteWidget extends StatelessWidget {
                   note.body,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontSize: 12,
-                        color: const Color(0x80000000),
+                        color: Theme.of(context).primaryColor.withOpacity(0.7),
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

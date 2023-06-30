@@ -24,7 +24,7 @@ class RecentWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
+        color:  const Color(0xFF6259FF),
         borderRadius: BorderRadius.circular(16),
       ),
       width: size.width * 0.6,

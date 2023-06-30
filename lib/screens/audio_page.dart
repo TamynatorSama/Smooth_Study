@@ -8,6 +8,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:smooth_study/model/notes_model.dart';
 import 'package:smooth_study/screens/notes/single_note_view_page.dart';
 import 'package:smooth_study/utils/download_notifier.dart';
+import 'package:smooth_study/utils/theme_provider.dart';
+import 'package:smooth_study/widget/music_notes_widget.dart';
 import 'package:smooth_study/widget/notes_widget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -25,7 +27,6 @@ class AudioPage extends StatefulWidget {
 class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
   late AudioPlayer audioPlayer;
   final storageIO = InternetFileStorageIO();
-  bool tst = false;
   late AnimationController _playCtrl;
   late Animation<double> _playAnimation;
   late AnimationController _forwardCtrl;
@@ -70,7 +71,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 50),
     );
     _playAnimation = Tween<double>(
-      begin: 1.0,
+      begin: 0.7,
       end: 1.2,
     ).animate(_playCtrl);
   }
@@ -122,7 +123,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                       bottomLeft: Radius.circular(12),
                       bottomRight: Radius.circular(12),
                     ),
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).canvasColor,
                   ),
                   // height: size.height * 0.1,
                   child: Row(
@@ -207,25 +208,28 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                                       ),
                                 IconButton(
                                   onPressed: () async {
-                                    await Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => SingleNoteViewPage(
-                                          courseCode:
-                                              widget.material.courseCode,
-                                          note: NoteModel(
-                                            head: '',
-                                            body: '',
-                                            materialName:
-                                                widget.material.fileName,
-                                            uid: const Uuid().v4(),
+                                    await Navigator.of(context)
+                                        .push(
+                                          MaterialPageRoute(
+                                            builder: (_) => SingleNoteViewPage(
+                                              courseCode:
+                                                  widget.material.courseCode,
+                                              note: NoteModel(
+                                                head: '',
+                                                body: '',
+                                                materialName:
+                                                    widget.material.fileName,
+                                                uid: const Uuid().v4(),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ).then((value) => Provider.of<AppProvider>(
-                                      context,
-                                      listen: false,
-                                    ).getNotes(widget.material.fileName));
-                                    
+                                        )
+                                        .then((value) =>
+                                            Provider.of<AppProvider>(
+                                              context,
+                                              listen: false,
+                                            ).getNotes(
+                                                widget.material.fileName));
                                   },
                                   icon: const Icon(
                                     Icons.note_alt_rounded,
@@ -246,7 +250,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                   width: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).canvasColor,
                   ),
                   child: const Icon(
                     Icons.headphones,
@@ -257,116 +261,127 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                 const SizedBox(
                   height: 40,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        if (audioPlayer.duration == Duration.zero) return;
-                        Duration seek =
-                            audioPlayer.position - const Duration(seconds: 10);
-                        if (seek <= Duration.zero) {
-                          audioPlayer.seek(Duration.zero);
-                        } else {
-                          audioPlayer.seek(seek);
-                        }
+                Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          if (audioPlayer.duration == Duration.zero) return;
+                          Duration seek = audioPlayer.position -
+                              const Duration(seconds: 10);
+                          if (seek <= Duration.zero) {
+                            audioPlayer.seek(Duration.zero);
+                          } else {
+                            audioPlayer.seek(seek);
+                          }
 
-                        await _reverseCtrl.forward();
-                        _reverseCtrl.reverse();
-                      },
-                      child: AnimatedBuilder(
-                        animation: _reverseAnimation,
-                        builder: (context, child) {
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..scale(_reverseAnimation.value),
-                            child: Icon(
-                              Icons.fast_rewind_rounded,
-                              color: Theme.of(context).cardColor,
-                              size: 48,
-                            ),
-                          );
+                          await _reverseCtrl.forward();
+                          _reverseCtrl.reverse();
                         },
-                      ),
-                    ),
-                    Theme(
-                      data: Theme.of(context)
-                          .copyWith(splashColor: Colors.transparent),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: InkWell(
-                          onTap: () async {
-                            if (audioPlayer.playing) {
-                              await audioPlayer.pause();
-                              return;
-                            }
-                            await audioPlayer.play();
-
-                            await _playCtrl.forward();
-                            _playCtrl.reverse();
+                        child: AnimatedBuilder(
+                          animation: _reverseAnimation,
+                          builder: (context, child) {
+                            return Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()
+                                ..scale(_reverseAnimation.value),
+                              child: Icon(
+                                Icons.fast_rewind_rounded,
+                                color: themeProvider.isDarkMode
+                                    ? Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.7)
+                                    : Theme.of(context).cardColor,
+                                size: 48,
+                              ),
+                            );
                           },
-                          child: AnimatedBuilder(
-                            animation: _playAnimation,
-                            builder: (context, child) {
-                              return Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.identity()
-                                  ..scale(_playAnimation.value),
-                                child: AnimatedCrossFade(
-                                  firstChild: SvgPicture.string(
-                                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="#707070"><path fill-rule="evenodd" d="M23 12c0-1.035-.53-2.07-1.591-2.647L8.597 2.385C6.534 1.264 4 2.724 4 5.033V12h19Z" clip-rule="evenodd"/><path d="m8.597 21.614l12.812-6.967A2.988 2.988 0 0 0 23 12H4v6.967c0 2.31 2.534 3.769 4.597 2.648Z" opacity=".5"/></g></svg>',
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  secondChild: SvgPicture.string(
-                                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="#707070"><path d="M2 6c0-1.886 0-2.828.586-3.414C3.172 2 4.114 2 6 2c1.886 0 2.828 0 3.414.586C10 3.172 10 4.114 10 6v12c0 1.886 0 2.828-.586 3.414C8.828 22 7.886 22 6 22c-1.886 0-2.828 0-3.414-.586C2 20.828 2 19.886 2 18V6Z"/><path d="M14 6c0-1.886 0-2.828.586-3.414C15.172 2 16.114 2 18 2c1.886 0 2.828 0 3.414.586C22 3.172 22 4.114 22 6v12c0 1.886 0 2.828-.586 3.414C20.828 22 19.886 22 18 22c-1.886 0-2.828 0-3.414-.586C14 20.828 14 19.886 14 18V6Z" opacity=".5"/></g></svg>',
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  crossFadeState: snapshot.data!.playing
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                                  duration: const Duration(milliseconds: 50),
-                                ),
-                              );
+                        ),
+                      ),
+                      Theme(
+                        data: Theme.of(context)
+                            .copyWith(splashColor: Colors.transparent),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (audioPlayer.playing) {
+                                await audioPlayer.pause();
+                                await _playCtrl.forward();
+                                _playCtrl.reverse();
+                              } else {
+                                await audioPlayer.play();
+                                await _playCtrl.forward();
+                                _playCtrl.reverse();
+                              }
                             },
+                            child: AnimatedBuilder(
+                              animation: _playAnimation,
+                              builder: (context, child) {
+                                return Transform(
+                                  alignment: Alignment.center,
+                                  transform: Matrix4.identity()
+                                    ..scale(_playAnimation.value),
+                                  child: AnimatedCrossFade(
+                                    firstChild: SvgPicture.string(
+                                      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="#707070"><path fill-rule="evenodd" d="M23 12c0-1.035-.53-2.07-1.591-2.647L8.597 2.385C6.534 1.264 4 2.724 4 5.033V12h19Z" clip-rule="evenodd"/><path d="m8.597 21.614l12.812-6.967A2.988 2.988 0 0 0 23 12H4v6.967c0 2.31 2.534 3.769 4.597 2.648Z" opacity=".5"/></g></svg>',
+                                      height: 70,
+                                      width: 70,
+                                    ),
+                                    secondChild: SvgPicture.string(
+                                      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="#707070"><path d="M2 6c0-1.886 0-2.828.586-3.414C3.172 2 4.114 2 6 2c1.886 0 2.828 0 3.414.586C10 3.172 10 4.114 10 6v12c0 1.886 0 2.828-.586 3.414C8.828 22 7.886 22 6 22c-1.886 0-2.828 0-3.414-.586C2 20.828 2 19.886 2 18V6Z"/><path d="M14 6c0-1.886 0-2.828.586-3.414C15.172 2 16.114 2 18 2c1.886 0 2.828 0 3.414.586C22 3.172 22 4.114 22 6v12c0 1.886 0 2.828-.586 3.414C20.828 22 19.886 22 18 22c-1.886 0-2.828 0-3.414-.586C14 20.828 14 19.886 14 18V6Z" opacity=".5"/></g></svg>',
+                                      height: 70,
+                                      width: 70,
+                                    ),
+                                    crossFadeState: snapshot.data!.playing
+                                        ? CrossFadeState.showSecond
+                                        : CrossFadeState.showFirst,
+                                    duration: const Duration(milliseconds: 50),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        if (audioPlayer.duration == Duration.zero) return;
-                        Duration seek =
-                            audioPlayer.position + const Duration(seconds: 10);
-                        if (seek >= audioPlayer.duration!) {
-                          audioPlayer.seek(audioPlayer.duration!);
-                        } else {
-                          audioPlayer.seek(seek);
-                        }
+                      GestureDetector(
+                        onTap: () async {
+                          if (audioPlayer.duration == Duration.zero) return;
+                          Duration seek = audioPlayer.position +
+                              const Duration(seconds: 10);
+                          if (seek >= audioPlayer.duration!) {
+                            audioPlayer.seek(audioPlayer.duration!);
+                          } else {
+                            audioPlayer.seek(seek);
+                          }
 
-                        await _forwardCtrl.forward();
-                        _forwardCtrl.reverse();
-                      },
-                      child: AnimatedBuilder(
-                        animation: _forwardAnimation,
-                        builder: (context, child) {
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..scale(_forwardAnimation.value),
-                            child: Icon(
-                              Icons.fast_forward_rounded,
-                              color: Theme.of(context).cardColor,
-                              size: 48,
-                            ),
-                          );
+                          await _forwardCtrl.forward();
+                          _forwardCtrl.reverse();
                         },
+                        child: AnimatedBuilder(
+                          animation: _forwardAnimation,
+                          builder: (context, child) {
+                            return Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()
+                                ..scale(_forwardAnimation.value),
+                              child: Icon(
+                                Icons.fast_forward_rounded,
+                                color:  themeProvider.isDarkMode
+                                    ? Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.7)
+                                    : Theme.of(context).cardColor,
+                                size: 48,
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                }),
                 const SizedBox(
                   height: 30,
                 ),
@@ -422,32 +437,46 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                   alignment: Alignment.topLeft,
                   child: const Text('Notes'),
                 ),
-                Consumer<AppProvider>(
-                  builder: (context,value,child) {
-                    return Expanded(
-                      child: value.notes.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No Notes',
-                                style:
-                                    Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: const Color.fromARGB(160, 0, 0, 0),
-                                        ),
-                              ),
-                            )
-                          : ListView.builder(
-                            itemCount: value.notes.length,
-                              itemBuilder: (context, index) {
-                                return NotesWidget(
-                                      size: size,
-                                      head: value.notes[index].head,
-                                      body: value.notes[index].body,
-                                    );
-                              },
+                Consumer<AppProvider>(builder: (context, value, child) {
+                  return Expanded(
+                    child: value.notes.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No Notes',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: const Color.fromARGB(160, 0, 0, 0),
+                                  ),
                             ),
-                    );
-                  }
-                ),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: value.notes.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => SingleNoteViewPage(
+                                        note: value.notes[index],
+                                        courseCode: widget.material.courseCode,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: NoteWidget(
+                                  callback: () {},
+                                  size: size,
+                                  note: value.notes[index],
+                                  courseCode: widget.material.courseCode,
+                                ),
+                              );
+                            },
+                          ),
+                  );
+                }),
                 const SizedBox(
                   height: 12,
                 ),

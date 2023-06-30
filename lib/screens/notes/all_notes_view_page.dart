@@ -50,7 +50,7 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
 
   @override
   void deactivate() {
-  print("""object ASADSDASDAS""");
+    print("""object ASADSDASDAS""");
     super.deactivate();
   }
 
@@ -67,7 +67,8 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        backgroundColor: const Color(0xFF6259FF),
+        onPressed: () async {
           // PersonalNotesBox().clearNotes();
           await Navigator.of(context).push(
             MaterialPageRoute(
@@ -82,7 +83,7 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
           );
           _appProvider.getNotes(widget.materialName);
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Column(
         children: [
@@ -219,91 +220,97 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SingleChildScrollView(
-                child:
-                    Consumer<AppProvider>(builder: (context, appProvider, _) {
-                  return Column(
-                    children: appProvider.noteSearchResult.isEmpty
-                        ? _appProvider.notesSearched
-                            ? [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    LottieBuilder.asset('assets/empty1.json'),
-                                    const Center(
-                                      child: Text('No Results'),
-                                    ),
-                                  ],
-                                ),
-                              ] // Search is Empty
-                            : appProvider.notes.isEmpty
-                                ? [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        LottieBuilder.asset(
-                                            'assets/98121-empty-state.json'),
-                                        const Center(
-                                          child: Text('No Notes ...yet'),
+                child: Consumer<AppProvider>(
+                  builder: (context, appProvider, _) {
+                    return Column(
+                      children: appProvider.noteSearchResult.isEmpty
+                          ? _appProvider.notesSearched
+                              ? [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      LottieBuilder.asset('assets/empty1.json'),
+                                      const Center(
+                                        child: Text('No Results'),
+                                      ),
+                                    ],
+                                  ),
+                                ] // Search is Empty
+                              : appProvider.notes.isEmpty
+                                  ? [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          LottieBuilder.asset(
+                                              'assets/98121-empty-state.json'),
+                                          const Center(
+                                            child: Text('No Notes ...yet'),
+                                          ),
+                                        ],
+                                      ),
+                                    ]
+                                  : List.generate(
+                                      appProvider.notes.length,
+                                      (index) => GestureDetector(
+                                        onTap: () async {
+                                          await Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  SingleNoteViewPage(
+                                                note: appProvider.notes[index],
+                                                courseCode: widget.courseCode,
+                                              ),
+                                            ),
+                                          );
+                                          _appProvider
+                                              .getNotes(widget.materialName);
+                                        },
+                                        child: NoteWidget(
+                                          callback: () {
+                                            _appProvider
+                                                .getNotes(widget.materialName);
+                                          },
+                                          size: size,
+                                          note: appProvider.notes[index],
+                                          courseCode: widget.courseCode,
                                         ),
-                                      ],
-                                    ),
-                                  ]
-                                : List.generate(
-                                    appProvider.notes.length,
-                                    (index) => GestureDetector(
-                                      onTap: () async{
-                                        await Navigator.of(context).push(
+                                      ),
+                                    )
+                          : List.generate(
+                              _appProvider.noteSearchResult.length,
+                              (index) => GestureDetector(
+                                onTap: _appProvider.noteSearchResult[index] !=
+                                        null
+                                    ? () async {
+                                        await Navigator.of(context)
+                                            .pushAndRemoveUntil(
                                           MaterialPageRoute(
                                             builder: (_) => SingleNoteViewPage(
-                                              note: appProvider.notes[index],
+                                              note: _appProvider
+                                                  .noteSearchResult[index]!,
                                               courseCode: widget.courseCode,
                                             ),
                                           ),
+                                          (route) => false,
                                         );
-                                        _appProvider.getNotes(widget.materialName);
-                                      },
-                                      child: NoteWidget(
-                                        callback:(){
-                                          _appProvider.getNotes(widget.materialName);
-                                        },
-                                        size: size,
-                                        note: appProvider.notes[index],
-                                        courseCode: widget.courseCode,
-                                      ),
-                                    ),
-                                  )
-                        : List.generate(
-                            _appProvider.noteSearchResult.length,
-                            (index) => GestureDetector(
-                              onTap: _appProvider.noteSearchResult[index] !=
-                                      null
-                                  ? () async{
-                                      await Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                          builder: (_) => SingleNoteViewPage(
-                                            note: _appProvider
-                                                .noteSearchResult[index]!,
-                                            courseCode: widget.courseCode,
-                                          ),
-                                        ),
-                                        (route) => false,
-                                      );
-                                      _appProvider.getNotes(widget.materialName);
-                                    }
-                                  : null,
-                              child: NoteWidget(
-                                callback: (){
-                                  _appProvider.getNotes(widget.materialName);
-                                },
-                                size: size,
-                                courseCode: widget.courseCode,
-                                note: _appProvider.noteSearchResult[index]!,
+                                        _appProvider
+                                            .getNotes(widget.materialName);
+                                      }
+                                    : null,
+                                child: NoteWidget(
+                                  callback: () {
+                                    _appProvider.getNotes(widget.materialName);
+                                  },
+                                  size: size,
+                                  courseCode: widget.courseCode,
+                                  note: _appProvider.noteSearchResult[index]!,
+                                ),
                               ),
                             ),
-                          ),
-                  );
-                }),
+                    );
+                  },
+                ),
               ),
             ),
           ),
