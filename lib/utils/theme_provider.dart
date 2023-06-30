@@ -14,7 +14,7 @@ class ThemeProvider with ChangeNotifier {
       ),
       bodyLarge: TextStyle(
         fontFamily: "Coinbase-Sans",
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
         fontSize: 24,
         color: Colors.white,
       ),

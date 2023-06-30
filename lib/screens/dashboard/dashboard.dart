@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -227,10 +229,10 @@ class _DashboardState extends State<Dashboard>
                                                   child: Column(
                                                     children: [
                                                       GestureDetector(
-                                                        onTap: () {
+                                                        onTap: () async{
                                                           if (provider.model ==
                                                               null) return;
-                                                          Navigator.of(context)
+                                                          await Navigator.of(context)
                                                               .push(
                                                             MaterialPageRoute(
                                                               builder: (_) =>
@@ -243,6 +245,7 @@ class _DashboardState extends State<Dashboard>
                                                               ),
                                                             ),
                                                           );
+                                                          setState(() {});
                                                         },
                                                         child: LevelHolder(
                                                           shape: HolderShape
@@ -260,8 +263,8 @@ class _DashboardState extends State<Dashboard>
                                                         height: 10,
                                                       ),
                                                       GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.of(context)
+                                                        onTap: () async{
+                                                          await Navigator.of(context)
                                                               .push(
                                                                   MaterialPageRoute(
                                                             builder: (_) => CoursesPage(
@@ -271,6 +274,7 @@ class _DashboardState extends State<Dashboard>
                                                                         0]
                                                                     .levels[1]),
                                                           ));
+                                                          setState(() {});
                                                         },
                                                         child: LevelHolder(
                                                           shape: HolderShape
@@ -292,8 +296,8 @@ class _DashboardState extends State<Dashboard>
                                                 ),
                                                 Expanded(
                                                   child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.of(context)
+                                                    onTap: () async{
+                                                      await Navigator.of(context)
                                                           .push(
                                                               MaterialPageRoute(
                                                         builder: (_) => CoursesPage(
@@ -304,6 +308,7 @@ class _DashboardState extends State<Dashboard>
                                                                         0]
                                                                     .levels[2]),
                                                       ));
+                                                      setState(() {});
                                                     },
                                                     child: LevelHolder(
                                                       shape: HolderShape
@@ -324,8 +329,8 @@ class _DashboardState extends State<Dashboard>
                                               height: 10,
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context)
+                                              onTap: () async{
+                                                await Navigator.of(context)
                                                     .push(MaterialPageRoute(
                                                   builder: (_) => CoursesPage(
                                                       currentLevel: provider
@@ -386,15 +391,28 @@ class _DashboardState extends State<Dashboard>
                                         ? Align(
                                             alignment: Alignment.center,
                                             child: Padding(
-                                                padding: const EdgeInsets.all(16),
+                                                padding:
+                                                    const EdgeInsets.all(16),
                                                 child: Column(
-                                          children: [
-                                            const SizedBox(height: 20),
-                                            SvgPicture.asset('assets/empty.svg'),
-                                            const SizedBox(height: 15),
-                                            Text('No Recent Docs',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500,color: Colors.grey),),
-                                          ],
-                                        )))
+                                                  children: [
+                                                    const SizedBox(height: 20),
+                                                    SvgPicture.asset(
+                                                        'assets/empty.svg'),
+                                                    const SizedBox(height: 15),
+                                                    Text(
+                                                      'No Recent Docs',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.grey),
+                                                    ),
+                                                  ],
+                                                )))
                                         : SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
@@ -501,19 +519,21 @@ class _DashboardState extends State<Dashboard>
   }
 }
 
-void updateMaterial(MaterialModel model) {
-  //  var materialCacheList = MaterialBox.materialBox.values;
-  //  print(MaterialBox.materialBox.keys);
-  // //  var parsed = materialCacheList.map((e){
-  // //   print(e);
-  // //   return e;
-  // //  });
-  //  for(var hel in materialCacheList){
-  //   print(hel);
-  //  }
-  //  print(materialCacheList);
+void updateMaterial(MaterialModel model) async {
+  var presentMaterailGrp =
+      MaterialBox.materialBox.get(model.courseCode) as List;
+  List<MaterialModel> json = presentMaterailGrp
+      .map((e) => MaterialModel.toJson(jsonDecode(e)))
+      .toList();
+  List<MaterialModel> newMaterialCache = json.map((element) {
+    if (element.fileName == model.fileName) {
+      return model;
+    }
+    return element;
+  }).toList();
 
-  // List<MaterialModel>? materials=MaterialBox.getMaterial(model.) ;
-  // MaterialBox.materialBox.put(widget.course.materialFolder,
-  //     materials.map((e) => jsonEncode(e.toJson())).toList());
+  await MaterialBox.materialBox.delete(model.courseCode);
+
+  MaterialBox.materialBox.put(model.courseCode,
+      newMaterialCache.map((e) => jsonEncode(e.toJson())).toList());
 }

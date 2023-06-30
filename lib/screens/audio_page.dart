@@ -6,7 +6,7 @@ import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/material_model.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:smooth_study/model/notes_model.dart';
-import 'package:smooth_study/screens/single_note_view_page.dart';
+import 'package:smooth_study/screens/notes/single_note_view_page.dart';
 import 'package:smooth_study/utils/download_notifier.dart';
 import 'package:smooth_study/widget/notes_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -47,7 +47,6 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
       context,
       listen: false,
     ).getNotes(widget.material.fileName);
-
     _forwardCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 50),
@@ -102,9 +101,9 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final notes = Provider.of<AppProvider>(context).notes;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: StreamBuilder<PlayerState>(
           stream: audioPlayer.playerStateStream,
           builder: (context, snapshot) {
@@ -143,7 +142,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                           ),
                           const SizedBox(width: 10),
                           Padding(
-                            padding: const EdgeInsets.only(top: 5.0, right: 20),
+                            padding: const EdgeInsets.only(top: 5.0),
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                   maxWidth:
@@ -163,65 +162,79 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          downloadNotifier.downloads
-                                  .containsKey(widget.material.fileName)
-                              ? ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                      maxWidth: 20, maxHeight: 10),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 18.0),
-                                    child: CircularProgressIndicator(
-                                      value: (downloadNotifier.downloads[widget
-                                              .material.fileName]["progress"]) /
-                                          100,
-                                      strokeWidth: 3,
-                                      color: Colors.white,
-                                    ),
-                                  ))
-                              : Padding(
-                                  padding: const EdgeInsets.only(right: 12.0),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      // DownloadNotifier.downloads.any((element) => element.containsKey(widget.materialModel.fileName))''
-                                      if (!widget.material.isLocal) {
-                                        downloadFile(widget.material.filePath);
-                                      }
-                                    },
-                                    icon: Icon(
-                                      widget.material.isLocal
-                                          ? Icons.check_circle_rounded
-                                          : Icons.cloud_download_rounded,
-                                      size: 20,
-                                      color: Colors.white,
-                                    ),
+                      ListenableBuilder(
+                          listenable: downloadNotifier,
+                          builder: (context, child) {
+                            return Row(
+                              children: [
+                                downloadNotifier.downloads
+                                        .containsKey(widget.material.fileName)
+                                    ? ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                            maxWidth: 20, maxHeight: 10),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 18.0),
+                                          child: CircularProgressIndicator(
+                                            value: (downloadNotifier.downloads[
+                                                        widget
+                                                            .material.fileName]
+                                                    ["progress"]) /
+                                                100,
+                                            strokeWidth: 3,
+                                            color: Colors.white,
+                                          ),
+                                        ))
+                                    : Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 12.0),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            // DownloadNotifier.downloads.any((element) => element.containsKey(widget.materialModel.fileName))''
+                                            if (!widget.material.isLocal) {
+                                              downloadFile(
+                                                  widget.material.filePath);
+                                            }
+                                          },
+                                          icon: Icon(
+                                            widget.material.isLocal
+                                                ? Icons.check_circle_rounded
+                                                : Icons.cloud_download_rounded,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                IconButton(
+                                  onPressed: () async {
+                                    await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => SingleNoteViewPage(
+                                          courseCode:
+                                              widget.material.courseCode,
+                                          note: NoteModel(
+                                            head: '',
+                                            body: '',
+                                            materialName:
+                                                widget.material.fileName,
+                                            uid: const Uuid().v4(),
+                                          ),
+                                        ),
+                                      ),
+                                    ).then((value) => Provider.of<AppProvider>(
+                                      context,
+                                      listen: false,
+                                    ).getNotes(widget.material.fileName));
+                                    
+                                  },
+                                  icon: const Icon(
+                                    Icons.note_alt_rounded,
+                                    color: Colors.white,
                                   ),
                                 ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => SingleNoteViewPage(
-                                    courseCode: widget.material.courseCode,
-                                    note: NoteModel(
-                                      head: '',
-                                      body: '',
-                                      materialName: widget.material.fileName,
-                                      uid: const Uuid().v4(),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.note_alt_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                              ],
+                            );
+                          }),
                     ],
                   ),
                 ),
@@ -409,39 +422,31 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                   alignment: Alignment.topLeft,
                   child: const Text('Notes'),
                 ),
-                Expanded(
-                  child: notes.isEmpty
-                      ? Center(
-                          child: Text(
-                            'No Notes',
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: const Color.fromARGB(160, 0, 0, 0),
-                                    ),
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: notes.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => SingleNoteViewPage(
-                                      note: notes[index],
-                                      courseCode: widget.material.courseCode,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: NotesWidget(
-                                size: size,
-                                head: notes[index].head,
-                                body: notes[index].body,
+                Consumer<AppProvider>(
+                  builder: (context,value,child) {
+                    return Expanded(
+                      child: value.notes.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No Notes',
+                                style:
+                                    Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: const Color.fromARGB(160, 0, 0, 0),
+                                        ),
                               ),
-                            );
-                          },
-                        ),
+                            )
+                          : ListView.builder(
+                            itemCount: value.notes.length,
+                              itemBuilder: (context, index) {
+                                return NotesWidget(
+                                      size: size,
+                                      head: value.notes[index].head,
+                                      body: value.notes[index].body,
+                                    );
+                              },
+                            ),
+                    );
+                  }
                 ),
                 const SizedBox(
                   height: 12,
