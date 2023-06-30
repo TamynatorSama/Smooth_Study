@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -189,8 +190,16 @@ class _CoursesPageState extends State<CoursesPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset('assets/empty.svg'),
-                                            const SizedBox(height: 15),
-                                            Text('No Results',style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w500,color: Colors.grey),),
+                            const SizedBox(height: 15),
+                            Text(
+                              'No Results',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey),
+                            ),
                           ],
                         )
                       : widget.currentLevel.courses.isEmpty

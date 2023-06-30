@@ -266,7 +266,7 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                               onTap: _appProvider.noteSearchResult[index] !=
                                       null
                                   ? () {
-                                      Navigator.of(context).pushAndRemoveUntil(
+                                      Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (_) => SingleNoteViewPage(
                                             note: _appProvider
@@ -274,7 +274,6 @@ class _AllNotesViewPageState extends State<AllNotesViewPage> {
                                             courseCode: widget.courseCode,
                                           ),
                                         ),
-                                        (route) => false,
                                       );
                                     }
                                   : null,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/notes_model.dart';
-import 'package:smooth_study/utils/personal_notes_box.dart';
 
 class NoteWidget extends StatelessWidget {
   final NoteModel note;
@@ -72,7 +73,7 @@ class NoteWidget extends StatelessWidget {
             itemBuilder: (context) => [
               PopupMenuItem(
                 onTap: () {
-                  PersonalNotesBox().deleteNote(
+                  Provider.of<AppProvider>(context, listen: false).deleteNote(
                     note: note,
                   );
                 },

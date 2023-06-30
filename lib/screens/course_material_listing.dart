@@ -242,8 +242,8 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                 Expanded(
                     child: appProvider.materialSearchResult.isEmpty
                         ? appProvider.materialsSearched
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                            ? ListView(
+                                // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   LottieBuilder.asset('assets/empty1.json'),
                                   const Center(
@@ -328,7 +328,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                                   .textTheme
                                                   .bodySmall
                                                   ?.copyWith(
-                                                    fontSize: 15,
+                                                    fontSize: 16,
                                                   ),
                                             ),
                                             subtitle: Padding(
@@ -353,46 +353,23 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                             //     style: primaryTextStyle.copyWith(
                                             //         fontSize: 14, color: Colors.grey)),
                                             trailing: IconButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          AllNotesViewPage(
-                                                        materialName:
-                                                            materials[index]
-                                                                .fileName,
-                                                        courseCode: widget
-                                                            .course.courseCode,
-                                                      ),
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        AllNotesViewPage(
+                                                      materialName:
+                                                          materials[index]
+                                                              .fileName,
+                                                      courseCode: widget
+                                                          .course.courseCode,
                                                     ),
-                                                  );
-                                                },
-                                                icon: const Icon(Icons.abc))
-                                            // PopupMenuButton(
-                                            //   itemBuilder: (context) {
-                                            //     return [
-                                            //       PopupMenuItem(
-                                            //         onTap: () {
-                                            //           print('Tapped');
-                                            //           Navigator.of(context).push(
-                                            //             MaterialPageRoute(
-                                            //               builder: (_) =>
-                                            //                   AllNotesViewPage(
-                                            //                 notes: PersonalNotesBox()
-                                            //                     .getNote(
-                                            //                         materials[index]),
-                                            //                 courseCode: widget
-                                            //                     .course.courseCode,
-                                            //               ),
-                                            //             ),
-                                            //           );
-                                            //         },
-                                            //         child: const Text('View Notes'),
-                                            //       ),
-                                            //     ];
-                                            //   },
-                                            // ),
-                                            ),
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                  Icons.note_alt_rounded),
+                                            )),
                                         const Divider(
                                           height: 5,
                                           thickness: 4,
@@ -466,7 +443,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                         .textTheme
                                         .bodySmall
                                         ?.copyWith(
-                                          fontSize: 52,
+                                          fontSize: 16,
                                         ),
                                   ),
                                   subtitle: Padding(
@@ -503,11 +480,7 @@ class _CourseMaterialListingState extends State<CourseMaterialListing> {
                                           ),
                                         );
                                       },
-                                      icon: const Icon(Icons.note_add)
-                                      //  SvgPicture.asset(
-                                      //   'assets/svg/notes.svg',
-                                      // ),
-                                      ),
+                                      icon: const Icon(Icons.note_alt_rounded)),
                                 ),
                                 const Divider(
                                   height: 5,

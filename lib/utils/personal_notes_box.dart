@@ -56,11 +56,10 @@ class PersonalNotesBox {
     }
   }
 
-  addOrUpdateNote({
-    required String materialName,
+  List<NoteModel> addOrUpdateNote({
     required NoteModel note,
   }) {
-    var prevNotes = getNotes(materialName);
+    var prevNotes = getNotes(note.materialName);
     try {
       final existingNote = prevNotes.firstWhere(
         (element) => element.uid == note.uid,
@@ -68,18 +67,22 @@ class PersonalNotesBox {
       prevNotes.remove(existingNote);
       prevNotes = [note, ...prevNotes];
       notesBox.put(
-        materialName,
+        note.materialName,
         jsonEncode(prevNotes),
       );
+      return prevNotes;
     } catch (_) {
       prevNotes = [note, ...prevNotes];
       notesBox.put(
-        materialName,
+        note.materialName,
         jsonEncode(prevNotes),
       );
+      return prevNotes;
     }
   }
 
+  /// Returns the new list of notes
+  /// or null when the note does not exist
   List<NoteModel>? deleteNote({
     required NoteModel note,
   }) {

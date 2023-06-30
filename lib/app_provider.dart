@@ -27,8 +27,18 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  addOrUpdateNote({
+    required NoteModel note,
+  }) {
+    final newNotes = PersonalNotesBox().addOrUpdateNote(
+      note: note,
+    );
+
+    notes = newNotes;
+    notifyListeners();
+  }
+
   deleteNote({
-    required String materialName,
     required NoteModel note,
   }) {
     final newNotes = PersonalNotesBox().deleteNote(
@@ -79,7 +89,7 @@ class AppProvider extends ChangeNotifier {
       if (materials.items.isNotEmpty) {
         for (var material in materials.items) {
           coursesMaterial.add(MaterialModel(
-            // The parent folder is the course code anyways so
+              // The parent folder is the course code anyways so
               courseCode: material.parent?.name ?? 'TST',
               fileName: material.name,
               filePath: await material.getDownloadURL(),
@@ -186,6 +196,7 @@ class AppProvider extends ChangeNotifier {
     final nonNullRes = results.where((element) => element != null).toList();
 
     if (nonNullRes.isEmpty) {
+      materialSearchResult = nonNullRes;
       materialsSearched = true;
       notifyListeners();
       return;
@@ -219,6 +230,7 @@ class AppProvider extends ChangeNotifier {
     final nonNullRes = results.where((element) => element != null).toList();
     if (nonNullRes.isEmpty) {
       coursesSearched = true;
+      courseSearchResult = nonNullRes;
       notifyListeners();
       return;
     }

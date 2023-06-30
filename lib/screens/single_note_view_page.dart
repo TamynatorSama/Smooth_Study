@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:smooth_study/app_provider.dart';
 import 'package:smooth_study/model/notes_model.dart';
-import 'package:smooth_study/utils/personal_notes_box.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 
 class SingleNoteViewPage extends StatefulWidget {
@@ -25,8 +25,6 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
   late FocusNode bodyFocus;
 
   bool readOnly = false;
-  String? ogHead;
-  String? ogBody;
 
   @override
   initState() {
@@ -49,6 +47,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
+    final _appProvider =  Provider.of<AppProvider>(context, listen: false);
 
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
@@ -69,7 +68,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
       //     }
 
       //     Navigator.of(context).pop();
-      //   },
+      //   },s
       //   child: const Icon(Icons.check),
       // ),
       body: SafeArea(
@@ -93,8 +92,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                           uid: widget.note.uid,
                         );
 
-                        PersonalNotesBox().addOrUpdateNote(
-                          materialName: widget.note.materialName,
+                        _appProvider.addOrUpdateNote(
                           note: note,
                         );
                       }
@@ -135,8 +133,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                                   materialName: widget.note.materialName,
                                   uid: widget.note.uid,
                                 );
-                                PersonalNotesBox().addOrUpdateNote(
-                                  materialName: widget.note.materialName,
+                                _appProvider.addOrUpdateNote(
                                   note: note,
                                 );
                               },
@@ -167,7 +164,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                                       uid: widget.note.uid,
                                     );
 
-                                    PersonalNotesBox().deleteNote(note: note);
+                                    _appProvider.deleteNote(note: note);
                                     Navigator.of(context).pop();
                                   },
                                   child: Text(
@@ -198,8 +195,7 @@ class _SingleNoteViewPageState extends State<SingleNoteViewPage> {
                                   materialName: widget.note.materialName,
                                   uid: widget.note.uid,
                                 );
-                                PersonalNotesBox().addOrUpdateNote(
-                                  materialName: widget.note.materialName,
+                                _appProvider.addOrUpdateNote(
                                   note: note,
                                 );
                               },

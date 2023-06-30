@@ -421,16 +421,23 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                           ),
                         )
                       : ListView.builder(
+                          itemCount: notes.length,
                           itemBuilder: (context, index) {
-                            print(notes.length);
-                            return Column(
-                              children: List.generate(
-                                1,
-                                (index) => NotesWidget(
-                                  size: size,
-                                  head: notes[index].head,
-                                  body: notes[index].body,
-                                ),
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => SingleNoteViewPage(
+                                      note: notes[index],
+                                      courseCode: widget.material.courseCode,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: NotesWidget(
+                                size: size,
+                                head: notes[index].head,
+                                body: notes[index].body,
                               ),
                             );
                           },
