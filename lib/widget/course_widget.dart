@@ -55,7 +55,6 @@ class CourseWidget extends StatelessWidget {
                 courseCode,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-          //  const   SizedBox(height: 2,),
               Text(
                 courseTitle,
                 style: Theme.of(context)
@@ -68,7 +67,6 @@ class CourseWidget extends StatelessWidget {
           
             ],
           ),
-          // const Spacer(),
           const Icon(Icons.arrow_forward_ios_rounded)
         ],
       ),

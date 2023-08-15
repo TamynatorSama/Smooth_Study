@@ -10,7 +10,6 @@ import 'package:smooth_study/screens/notes/single_note_view_page.dart';
 import 'package:smooth_study/utils/download_notifier.dart';
 import 'package:smooth_study/utils/theme_provider.dart';
 import 'package:smooth_study/widget/music_notes_widget.dart';
-import 'package:smooth_study/widget/notes_widget.dart';
 import 'package:uuid/uuid.dart';
 
 class AudioPage extends StatefulWidget {
@@ -191,7 +190,6 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                                             const EdgeInsets.only(right: 12.0),
                                         child: IconButton(
                                           onPressed: () {
-                                            // DownloadNotifier.downloads.any((element) => element.containsKey(widget.materialModel.fileName))''
                                             if (!widget.material.isLocal) {
                                               downloadFile(
                                                   widget.material.filePath);
