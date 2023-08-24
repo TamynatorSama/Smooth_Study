@@ -30,7 +30,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
   late Animation<double> _playAnimation;
   late AnimationController _forwardCtrl;
   late Animation<double> _forwardAnimation;
-  late AnimationController _reverseCtrl;
+  late AnimationController _reverseAnimationCtrl;
   late Animation<double> _reverseAnimation;
 
   @override
@@ -56,14 +56,14 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
       end: 1.2,
     ).animate(_forwardCtrl);
 
-    _reverseCtrl = AnimationController(
+    _reverseAnimationCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 50),
     );
     _reverseAnimation = Tween<double>(
       begin: 1.0,
       end: 1.2,
-    ).animate(_reverseCtrl);
+    ).animate(_reverseAnimationCtrl);
 
     _playCtrl = AnimationController(
       vsync: this,
@@ -94,7 +94,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
     audioPlayer.dispose();
     _forwardCtrl.dispose();
     _playCtrl.dispose();
-    _reverseCtrl.dispose();
+    _reverseAnimationCtrl.dispose();
     super.dispose();
   }
 
@@ -274,8 +274,8 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                             audioPlayer.seek(seek);
                           }
 
-                          await _reverseCtrl.forward();
-                          _reverseCtrl.reverse();
+                          await _reverseAnimationCtrl.forward();
+                          _reverseAnimationCtrl.reverse();
                         },
                         child: AnimatedBuilder(
                           animation: _reverseAnimation,
@@ -307,11 +307,11 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                               if (audioPlayer.playing) {
                                 await audioPlayer.pause();
                                 await _playCtrl.forward();
-                                _playCtrl.reverse();
+                                await _playCtrl.reverse();
                               } else {
                                 await audioPlayer.play();
                                 await _playCtrl.forward();
-                                _playCtrl.reverse();
+                                await _playCtrl.reverse();
                               }
                             },
                             child: AnimatedBuilder(
@@ -366,7 +366,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                                 ..scale(_forwardAnimation.value),
                               child: Icon(
                                 Icons.fast_forward_rounded,
-                                color:  themeProvider.isDarkMode
+                                color: themeProvider.isDarkMode
                                     ? Theme.of(context)
                                         .canvasColor
                                         .withOpacity(0.7)
