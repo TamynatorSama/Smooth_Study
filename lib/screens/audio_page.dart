@@ -146,7 +146,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                   maxWidth:
-                                      MediaQuery.of(context).size.width * 0.6),
+                                      MediaQuery.of(context).size.width * 0.48),
                               child: Text(
                                 widget.material.fileName,
                                 maxLines: 1,
@@ -240,6 +240,7 @@ class _AudioPageState extends State<AudioPage> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
+                
                 const SizedBox(
                   height: 100,
                 ),

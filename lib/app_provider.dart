@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:smooth_study/model/notes_model.dart';
 import 'package:smooth_study/utils/constants.dart';
 import 'package:smooth_study/utils/material_box.dart';
 import 'package:smooth_study/utils/personal_notes_box.dart';
+import 'package:smooth_study/utils/recently_viewed_box.dart';
+import 'package:smooth_study/utils/uploading_screen.dart';
 
 class AppProvider extends ChangeNotifier {
   SmoothStudyModel? model;
@@ -18,6 +21,7 @@ class AppProvider extends ChangeNotifier {
   bool coursesSearched = false;
   List<MaterialModel?> materialSearchResult = [];
   bool materialsSearched = false;
+  UploadTask? task;
 
   List<NoteModel> notes = [];
   bool error = false;
@@ -49,6 +53,45 @@ class AppProvider extends ChangeNotifier {
       notes = newNotes;
       notifyListeners();
     }
+  }
+
+  Future<void> deleteMaterial(
+    context, {
+    required MaterialModel material,
+  }) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      await storage
+          .ref()
+          .child('${material.courseCode}/${material.fileName}')
+          .delete();
+
+      RecentViewedBox.remove(material);
+    } catch (e) {
+      // print(e);
+    }
+  }
+
+  Future<void> uploadMaterial(
+    context, {
+    required String materialFolder,
+    String? fileName,
+    required File file,
+  }) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+
+    Reference ref = storage.ref().child(
+        "$materialFolder/${fileName != null ? '${fileName}.${file.path.split('.').last}' : file.path.split("/").last}");
+
+    UploadTask newtask = ref.putFile(file);
+    await Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => UploadMaterial(taskUpdate: newtask)))
+        .then((value) {
+      if (fileName != null) {
+        Navigator.pop(context);
+      }
+    });
   }
 
   Future<void> getListOfCourses() async {
